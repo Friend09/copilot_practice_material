@@ -10,7 +10,7 @@ Fetch posts from **JSONPlaceholder** and report which user wrote the most.
 
 ### Stretch
 
-* Fetch `/users` to get the author name.
-* Save the analysis to `analysis.txt`.
+- Fetch `/users` to get the author name.
+- Save the analysis to `analysis.txt`.
 
 > Hint: install `requests` (`pip install requests`)
