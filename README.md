@@ -82,7 +82,15 @@ Work through them in ascending order.
    cd copilot_practice_material
    ```
 
-2. **Install Python deps**
+2. **Open in VS Code**
+
+   ```bash
+   code _copilot_practice_material.code-workspace
+   # or simply
+   code .
+   ```
+
+3. **Install Python deps**
 
    ```bash
    # fast path with uv
@@ -91,14 +99,6 @@ Work through them in ascending order.
    # or classic pip / virtualenv
    python -m venv .venv && source .venv/bin/activate
    pip install -r requirements.txt
-   ```
-
-3. **Open in VS Code**
-
-   ```bash
-   code _copilot_practice_material.code-workspace
-   # or simply
-   code .
    ```
 
 4. **Sign in to GitHub inside VS Code**
@@ -136,6 +136,7 @@ Work through them in ascending order.
 
 ### 🎯 Hackathon Challenges (`hackathon/`)
 
+> NOTE: This is just a sample structure (WIP), subject to change and more details to come.
 Two distinct formats for conducting GitHub Copilot hackathons:
 
 #### `guided/` - Structured Hackathon Experience
