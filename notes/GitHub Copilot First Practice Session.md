@@ -96,7 +96,6 @@ Your Comments/Code → AI Processing → Intelligent Suggestions → You Review 
     "plaintext": false
   },
   "github.copilot.inlineSuggest.enable": true,
-  "github.copilot.inlineSuggest.delay": 10
 }
 ```
 
