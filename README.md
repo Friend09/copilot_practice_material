@@ -14,44 +14,29 @@ Examples are in **Python 3.8+** and designed for **VS Code**.
 ## 1 Repository Structure
 
 ```
-.
-├── advanced_copilot_practice/
-│   ├── 01_custom_instructions/
-│   ├── 02_advanced_prompts/
-│   ├── 03_project_context/
-│   ├── 04_refactor_debug/
-│   └── 05_mcp_agent/
-├── beginner_copilot_practice/
-│   ├── 01_hello_copilot/
-│   ├── 02_function_completion/
-│   ├── 03_loops_logic/
-│   ├── 04_tdd/
-│   └── 05_documentation_refactor/
-├── hackathon/
-│   ├── guided/                    # Structured hackathon with detailed guidance
-│   │   ├── beginner/
-│   │   │   ├── 01_cli_todo/
-│   │   │   └── 02_data_fetch/
-│   │   └── advanced/
-│   │       ├── 01_web_api/
-│   │       └── 02_tictactoe/
-│   └── minimal/                   # Open-ended hackathon with minimal scaffolding
-│       ├── beginner/
-│       │   ├── 01_todo_cli/
-│       │   └── 02_data_fetch/
-│       └── advanced/
-│           ├── 01_flask_api/
-│           └── 02_game_of_life/
-├── notes/
-│   ├── GitHub Copilot Mastery_ 30-Day Practice Program.md
-│   ├── GitHub Copilot Mastery_ Your 30-Day Learning Roadmap.md
-│   ├── GitHub Copilot Tips and Tricks.md
-│   └── GitHub Copilot Troubleshooting Guide.md
-└── _copilot_practice_material.code-workspace   # optional VS Code workspace
+copilot_practice_material/
+├── README.md                          # This file
+├── _copilot_practice_material.code-workspace
+├── practice/                          # Structured learning exercises
+│   ├── beginner/                      # Beginner track (01-05 modules + daily exercises)
+│   └── advanced/                      # Advanced track (01-05 modules + daily exercises)
+├── demo/                              # Example implementations and demos
+│   ├── basic/                         # Basic Copilot usage examples
+│   └── advanced/                      # Advanced patterns and techniques
+├── hackathon/                         # Hackathon challenges
+│   ├── guided/                        # Structured challenges with detailed guidance
+│   └── minimal/                       # Open-ended challenges with minimal scaffolding
+├── projects/                          # Project-based learning
+│   ├── 30-day-program/                # Weekly projects for the 30-day program
+│   └── independent/                   # Standalone projects for skill development
+└── docs/                              # Documentation and learning resources
+    ├── guides/                        # Learning guides and structured programs
+    ├── reference/                     # Tips, tricks, and troubleshooting
+    └── sessions/                      # Workshop materials and session notes
 ```
 
-Each numbered folder is a self‑contained lab with its own **README.md** and starter code.
-Work through them in ascending order.
+Each directory contains self-contained materials with clear README files and starter code.
+Work through `practice/` exercises in order for the best learning experience.
 
 > **💡 Tip**: Complete the practice exercises before attempting hackathon challenges for the best learning experience.
 
@@ -112,79 +97,103 @@ Work through them in ascending order.
 
 ---
 
-## 4 Project Contents
+## 4 Learning Paths
 
-### 🟢 Beginner Track (`beginner_copilot_practice/`)
+### 🟢 Beginner Track (`practice/beginner/`)
 
-| Lab                         | Skill Focus                                       |
-| --------------------------- | ------------------------------------------------- |
-| `01_hello_copilot`          | Accept your first suggestion ("Hello World").     |
-| `02_function_completion`    | Fill in function bodies from docstrings/comments. |
-| `03_loops_logic`            | Generate algorithms (Fibonacci, prime filter).    |
-| `04_tdd`                    | Use Copilot to satisfy failing `pytest` tests.    |
-| `05_documentation_refactor` | Document & refactor verbose code with Chat.       |
+Perfect for those new to GitHub Copilot:
 
-### 🔵 Advanced Track (`advanced_copilot_practice/`)
+| Module                    | Topic                      | Goal                                              |
+| ------------------------- | -------------------------- | ------------------------------------------------- |
+| 01_hello_copilot          | Installation & Hello World | Accept your first Copilot suggestion              |
+| 02_function_completion    | Function bodies            | Use comments/docstrings to drive completions      |
+| 03_loops_logic            | Loops & algorithms         | Generate multi‑line code for Fibonacci & primes   |
+| 04_tdd                    | Test‑driven development    | Implement code to satisfy provided tests          |
+| 05_documentation_refactor | Docs & refactor            | Use Copilot to document and improve existing code |
 
-| Lab                      | Skill Focus                                              |
-| ------------------------ | -------------------------------------------------------- |
-| `01_custom_instructions` | Steer Copilot via `.github/copilot-instructions.md`.     |
-| `02_advanced_prompts`    | Generate a Flask API via multi‑line prompts.             |
-| `03_project_context`     | Use your own API (`utils/speech_api.py`) in completions. |
-| `04_refactor_debug`      | Refactor & debug legacy code with Chat.                  |
-| `05_mcp_agent`           | Let a Copilot **agent** fix an issue & open a PR (MCP).  |
+**Daily Exercises**: days 01-14 with progressive skill building
 
-### 🎯 Hackathon Challenges (`hackathon/`)
+### 🔵 Advanced Track (`practice/advanced/`)
 
-> NOTE: This is just a sample structure (WIP), subject to change and more details to come.
-Two distinct formats for conducting GitHub Copilot hackathons:
+For experienced developers exploring sophisticated features:
 
-#### `guided/` - Structured Hackathon Experience
+| Module                 | Topic                   | Goal                                          |
+| ---------------------- | ----------------------- | --------------------------------------------- |
+| 01_custom_instructions | Repository instructions | Steer Copilot via project-specific guidelines |
+| 02_advanced_prompts    | Multi‑line prompts      | Generate complete features and applications   |
+| 03_project_context     | Custom APIs & context   | Use your own APIs in Copilot completions      |
+| 04_refactor_debug      | Refactoring & debugging | Refactor & debug legacy code with Chat        |
+| 05_mcp_agent           | Agent mode (MCP)        | Let Copilot agent fix issues & open PRs       |
 
-Perfect for educational settings and teams new to GitHub Copilot:
+**Daily Exercises**: days 15-30 with complex scenarios and real-world applications
+
+### 🎯 Hands-On Challenges (`hackathon/`)
+
+Two formats for different learning styles:
+
+#### `guided/` - Structured Experience
 
 - **Duration**: 1-2 hours per challenge
-- **Style**: Detailed briefs with starter code and comprehensive guidance
-- **Challenges**: CLI Todo App, Data Fetching, Web API Development, TicTacToe Game
+- **Style**: Detailed briefs with comprehensive guidance
+- **Best for**: Educational settings, Copilot newcomers
 
-#### `minimal/` - Open-Ended Hackathon Space
+#### `minimal/` - Open-Ended Space
 
-Ideal for experienced developers who prefer creative freedom:
+- **Duration**: 2-4 hours (flexible)
+- **Style**: Minimal scaffolding with creative freedom
+- **Best for**: Experienced developers, creative exploration
 
-- **Duration**: Flexible (typically 2-4 hours)
-- **Style**: Minimal scaffolding with basic templates and brief descriptions
-- **Challenges**: Todo CLI, Data Analysis, Flask API, Conway's Game of Life
+### 📚 Supporting Materials
 
-Choose the format that best matches your group's experience level and hackathon objectives.
-
-### 📚 Learning Resources (`notes/`)
-
-Comprehensive guides and documentation:
-
-- **30-Day Practice Program** – Structured daily exercises
-- **30-Day Learning Roadmap** – Progressive skill development
-- **Tips and Tricks** – Advanced techniques and shortcuts
-- **Troubleshooting Guide** – Common issues and solutions
-
-Each folder's README walks you through the steps and suggested prompts.
+- **`demo/`** - Live examples and reference implementations
+- **`projects/`** - Extended project-based learning (30-day program + independent projects)
+- **`docs/`** - Comprehensive guides, tips, and troubleshooting resources
 
 ---
 
-## 5 Running the Exercises
+## 5 Getting Started
 
-- **Inline Suggestions** – Type, accept with `Tab`, cycle variants with `Alt` + `[` / `Alt` + `]`.
-- **Copilot Chat** – `Ctrl` + `Shift` + `I` (or chat icon) to open a panel; ask questions.
-- **Agent Tasks** – Switch the chat panel to **Agent**; issue commands, e.g.:
+1. **Choose Your Learning Path**
 
+   - **New to Copilot?** Start with `practice/beginner/01_hello_copilot/`
+   - **Have experience?** Jump to `practice/advanced/` or try `hackathon/` challenges
+   - **Want structured learning?** Follow the 30-day program in `docs/guides/`
+
+2. **Set Up Your Environment**
+
+   ```bash
+   # Clone and open in VS Code
+   git clone https://github.com/your-org/copilot_practice_material.git
+   cd copilot_practice_material
+   code _copilot_practice_material.code-workspace
+   ```
+
+3. **Install Dependencies**
+
+   ```bash
+   # Fast path with uv
+   uv pip install -r requirements.txt
+
+   # Or classic pip/virtualenv
+   python -m venv .venv && source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+4. **Verify Copilot Setup**
+   - Ensure the Copilot status icon (bottom‑right) reads **"Copilot: ON"**
+   - For agent mode: Command Palette → **GitHub Copilot: Toggle Agent Mode**
+
+## 6 Usage Patterns
+
+- **Inline Suggestions** – Type, accept with `Tab`, cycle variants with `Alt` + `[` / `Alt` + `]`
+- **Copilot Chat** – `Ctrl` + `Shift` + `I` (or chat icon) to open panel; ask questions
+- **Agent Tasks** – Switch chat panel to **Agent** mode; issue commands like:
   > _Fix issue #1 in `bugfix/buggy_code.py` and commit the changes._
-
-  Review the plan and confirm each step.
-
-- **Run Tests** – Inside TDD labs, execute `python -m pytest -q`.
+- **Daily Practice** – Spend 30-45 minutes daily with exercises and challenges
 
 ---
 
-## 6 Best Practices
+## 7 Best Practices
 
 1. Write **clear, goal‑oriented prompts**—context matters.
 2. **Iterate.** Refine the prompt or ask Chat for alternatives if the first answer isn't right.
@@ -194,13 +203,13 @@ Each folder's README walks you through the steps and suggested prompts.
 
 ---
 
-## 7 Contributing
+## 8 Contributing
 
 Spotted an issue or have a new exercise idea?
-Open an **Issue** or submit a **Pull Request**—follow the existing `NN_topic/` convention.
+Open an **Issue** or submit a **Pull Request**—follow the existing folder conventions and include comprehensive README files.
 
 ---
 
-## 8 License
+## 9 License
 
 For educational and internal-training use. See [LICENSE](LICENSE) for details.

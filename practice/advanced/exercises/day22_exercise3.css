@@ -1,0 +1,35 @@
+/* day22_exercise3.css */
+
+/* Styles for CSSStyledComponent */
+.styled-component {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-family: Arial, sans-serif;
+}
+
+.styled-component h2 {
+  color: #333;
+  margin-top: 0;
+}
+
+/* Styles for ConditionalStyledComponent */
+.conditional-component {
+  padding: 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.conditional-component.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 2px solid #45a049;
+}
+
+.conditional-component.inactive {
+  background-color: #f44336;
+  color: white;
+  border: 2px solid #da190b;
+}
+
