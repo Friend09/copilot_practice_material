@@ -23,7 +23,7 @@ These demos go beyond basic code completion to show Copilot as an **intelligent 
 | `demo1_agent_mode.md`             | Agent Mode & Multi-File Intelligence | Showing autonomous development | 10-15 min |
 | `demo2_security.md`               | AI Security Intelligence             | Security-conscious audiences   | 8-12 min  |
 | `demo3_context_understanding.md`  | Advanced Context & Architecture      | Technical architects           | 12-18 min |
-| `demo4_custom_instructions.md`    | Function Calling & Customization     | Enterprise teams               | 10-15 min |
+| `demo4_custom_instructions.md`    | Function Calling & Web Scraping      | Data extraction teams          | 10-15 min |
 | `demo5_code_review.md`            | AI-Powered Code Review               | QA and development teams       | 8-12 min  |
 | `demo6_extensions_integration.md` | DevOps Tool Integration              | DevOps and platform teams      | 15-20 min |
 | `demo7_vscode_features.md`        | VS Code Enterprise Features          | Enterprise teams               | 15-20 min |
@@ -87,7 +87,14 @@ cd demo/advanced
 - **Highlight**: Cross-file intelligence and consistency
 - **Audience Value**: Maintains architectural patterns automatically
 
-##### **Demo 4: VS Code Enterprise Features** (10 minutes)
+##### **Demo 4: Custom Instructions & Web Scraping** (8 minutes)
+
+- **File**: `demo4_custom_instructions.md`
+- **Key Prompt**: _"Create a ticket monitoring system with custom scraping instructions"_
+- **Highlight**: Domain-specific AI guidance and function calling
+- **Audience Value**: AI adapts to team's web scraping standards and practices
+
+##### **Demo 5: VS Code Enterprise Features** (10 minutes)
 
 - **File**: `demo7_vscode_features.md`
 - **Key Features**: Custom Instructions, Advanced Chat, Workspace Intelligence, Extensions

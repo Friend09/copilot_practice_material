@@ -12,7 +12,7 @@ This demo showcases GitHub Copilot's advanced capabilities:
 
 ## Demo Scenario
 
-**Financial Trading System** - Demonstrate custom instructions for financial compliance, function calling for market data integration, and team-specific architectural patterns.
+**Web Scraping Ticketing Tool** - Demonstrate custom instructions for web scraping best practices, function calling for data extraction and processing, and team-specific architectural patterns for scalable ticket monitoring systems.
 
 🎯 **This demo shows how to customize Copilot for enterprise needs!**
 
@@ -20,35 +20,38 @@ This demo showcases GitHub Copilot's advanced capabilities:
 
 ## Custom Instructions Examples
 
-### Financial Domain Custom Instructions
+### Web Scraping Domain Custom Instructions
 
 ```text
-# GitHub Copilot Custom Instructions: Financial Trading System
+# GitHub Copilot Custom Instructions: Web Scraping Ticketing Tool
 
 ## Code Style Guidelines:
 1. Use type hints for all function parameters and return values
 2. Include docstrings with parameter descriptions and examples
-3. Use Decimal for all financial calculations (never float)
-4. Include logging for all business-critical operations
-5. Add input validation for all public methods
-6. Follow the Repository pattern for data access
-7. Use dataclasses for value objects
-8. Include error handling with custom exceptions
+3. Use dataclasses for structured data models
+4. Include comprehensive logging for all scraping operations
+5. Add rate limiting and retry mechanisms for all web requests
+6. Follow the Repository pattern for data persistence
+7. Use Pydantic models for data validation
+8. Include robust error handling with custom exceptions
 
-## Financial Domain Rules:
-1. All monetary amounts must use Decimal type
-2. Include currency code with all financial operations
-3. Log all trading decisions with timestamps
-4. Validate market hours before placing orders
-5. Include risk management checks
-6. Use audit trails for compliance
+## Web Scraping Best Practices:
+1. Always respect robots.txt and rate limits
+2. Use random delays between requests to avoid detection
+3. Implement proper session management and cookie handling
+4. Include User-Agent rotation for different requests
+5. Add proxy support for large-scale operations
+6. Use headless browsers for JavaScript-heavy sites
+7. Implement data validation and sanitization
+8. Cache responses to minimize redundant requests
 
 ## Architecture Patterns:
-1. Separate business logic from infrastructure
+1. Separate scraping logic from data processing
 2. Use dependency injection for external services
-3. Implement the Strategy pattern for trading algorithms
-4. Use Observer pattern for price updates
-5. Include circuit breakers for external API calls
+3. Implement the Strategy pattern for different ticket sites
+4. Use Observer pattern for real-time notifications
+5. Include circuit breakers for unreliable websites
+6. Use queue systems for batch processing
 
 Ask Copilot to follow these instructions when generating code!
 ```
@@ -57,178 +60,271 @@ Ask Copilot to follow these instructions when generating code!
 
 ## Foundation Code Examples
 
-### Value Objects with Financial Domain Rules
+### Value Objects with Web Scraping Domain Rules
 
 ```python
-from typing import Dict, List, Optional, Any, Callable
-from dataclasses import dataclass
+from typing import Dict, List, Optional, Any, Callable, Union
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from decimal import Decimal
 import json
 import logging
 from abc import ABC, abstractmethod
+from urllib.parse import urljoin, urlparse
+import requests
+from pydantic import BaseModel, validator
+import time
+import random
 
 @dataclass(frozen=True)
-class Money:
+class TicketInfo:
     """
-    Value object for monetary amounts - demonstrates custom instruction
-    for using Decimal instead of float for financial calculations
+    Value object for ticket information - demonstrates custom instruction
+    for structured data modeling with validation
     """
-    amount: Decimal
+    event_name: str
+    venue: str
+    date: datetime
+    price: Optional[Decimal] = None
     currency: str = "USD"
+    availability: str = "UNKNOWN"  # AVAILABLE, SOLD_OUT, LIMITED, UNKNOWN
+    section: Optional[str] = None
+    row: Optional[str] = None
+    seat_numbers: Optional[List[str]] = None
+    url: Optional[str] = None
 
     def __post_init__(self):
-        if not isinstance(self.amount, Decimal):
-            raise ValueError("Amount must be Decimal type for financial accuracy")
-        if len(self.currency) != 3:
-            raise ValueError("Currency must be 3-letter ISO code")
-
-    def add(self, other: 'Money') -> 'Money':
-        """Add two Money objects with currency validation"""
-        if self.currency != other.currency:
-            raise ValueError(f"Cannot add {self.currency} and {other.currency}")
-        return Money(self.amount + other.amount, self.currency)
+        if self.availability not in ['AVAILABLE', 'SOLD_OUT', 'LIMITED', 'UNKNOWN']:
+            raise ValueError("Invalid availability status")
+        if self.price and not isinstance(self.price, Decimal):
+            raise ValueError("Price must be Decimal type for accuracy")
 
 @dataclass
-class Trade:
+class ScrapingTarget:
     """
-    Trade entity following custom instructions for financial domain modeling
+    Scraping target entity following custom instructions for web scraping domain modeling
     """
-    symbol: str
-    quantity: int
-    price: Money
-    trade_type: str  # 'BUY' or 'SELL'
-    timestamp: datetime
-    trader_id: str
-    order_id: Optional[str] = None
+    url: str
+    site_name: str
+    selectors: Dict[str, str]  # CSS selectors for different data fields
+    rate_limit: float = 1.0  # seconds between requests
+    requires_js: bool = False
+    headers: Dict[str, str] = field(default_factory=dict)
+    cookies: Dict[str, str] = field(default_factory=dict)
 
     def __post_init__(self):
         # Validation following custom instructions
-        if self.trade_type not in ['BUY', 'SELL']:
-            raise ValueError("Trade type must be 'BUY' or 'SELL'")
-        if self.quantity <= 0:
-            raise ValueError("Quantity must be positive")
+        if not self.url.startswith(('http://', 'https://')):
+            raise ValueError("URL must start with http:// or https://")
+        if self.rate_limit < 0.1:
+            raise ValueError("Rate limit must be at least 0.1 seconds")
 
-class TradingException(Exception):
+class ScrapingException(Exception):
     """Custom exception following team guidelines"""
     pass
 
-class MarketClosedException(TradingException):
-    """Raised when attempting to trade outside market hours"""
+class RateLimitExceededException(ScrapingException):
+    """Raised when rate limiting is triggered"""
+    pass
+
+class SiteBlockedException(ScrapingException):
+    """Raised when the scraping target blocks requests"""
     pass
 ```
 
 ### Function Calling Demonstration Classes
 
 ```python
-class MarketDataService:
+class WebScrapingService:
     """
     Service that demonstrates function calling capabilities
     Copilot will understand when to call these methods based on context
     """
 
-    def get_current_price(self, symbol: str) -> Money:
+    def __init__(self):
+        self.session = requests.Session()
+        self.last_request_time = {}
+
+    def fetch_page(self, url: str, headers: Optional[Dict[str, str]] = None,
+                   rate_limit: float = 1.0) -> str:
         """
-        Get current market price for a symbol
+        Fetch a web page with rate limiting and error handling
 
         Args:
-            symbol: Stock symbol (e.g., 'AAPL', 'GOOGL')
+            url: URL to fetch
+            headers: Optional HTTP headers
+            rate_limit: Minimum seconds between requests to this domain
 
         Returns:
-            Current market price as Money object
+            Page content as string
 
         Example:
-            >>> service = MarketDataService()
-            >>> price = service.get_current_price('AAPL')
-            >>> print(f"AAPL: {price.amount} {price.currency}")
+            >>> service = WebScrapingService()
+            >>> content = service.fetch_page('https://example.com/tickets')
+            >>> print(f"Page length: {len(content)}")
         """
-        # Copilot will understand this needs external API integration
-        logging.info(f"Fetching current price for {symbol}")
-        # Mock implementation - Copilot will suggest real API integration
-        return Money(Decimal("150.25"), "USD")
+        domain = urlparse(url).netloc
 
-    def get_historical_data(self, symbol: str, days: int = 30) -> List[Dict[str, Any]]:
+        # Rate limiting following custom instructions
+        if domain in self.last_request_time:
+            time_since_last = time.time() - self.last_request_time[domain]
+            if time_since_last < rate_limit:
+                delay = rate_limit - time_since_last + random.uniform(0.1, 0.5)
+                logging.info(f"Rate limiting: waiting {delay:.2f} seconds")
+                time.sleep(delay)
+
+        self.last_request_time[domain] = time.time()
+
+        # Copilot will understand this needs proper error handling
+        logging.info(f"Fetching page: {url}")
+        try:
+            response = self.session.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            return response.text
+        except requests.RequestException as e:
+            logging.error(f"Failed to fetch {url}: {e}")
+            raise ScrapingException(f"Failed to fetch page: {e}")
+
+    def extract_ticket_data(self, html_content: str, selectors: Dict[str, str]) -> List[TicketInfo]:
         """
-        Get historical price data
+        Extract ticket information from HTML content
 
         Args:
-            symbol: Stock symbol
-            days: Number of days of historical data
+            html_content: Raw HTML content
+            selectors: CSS selectors for different data fields
 
         Returns:
-            List of price data points
+            List of extracted ticket information
         """
-        logging.info(f"Fetching {days} days of historical data for {symbol}")
-        # Copilot will implement based on requirements
+        logging.info("Extracting ticket data from HTML content")
+        # Copilot will implement based on BeautifulSoup or similar
         pass
 
-    def subscribe_to_price_updates(self, symbol: str, callback: Callable) -> None:
+    def monitor_ticket_availability(self, targets: List[ScrapingTarget],
+                                  callback: Callable[[TicketInfo], None]) -> None:
         """
-        Subscribe to real-time price updates
+        Monitor multiple ticket sites for availability changes
 
         Args:
-            symbol: Stock symbol to monitor
-            callback: Function to call when price updates
+            targets: List of scraping targets to monitor
+            callback: Function to call when tickets become available
         """
-        logging.info(f"Subscribing to price updates for {symbol}")
-        # Copilot will implement websocket or streaming connection
+        logging.info(f"Starting monitoring for {len(targets)} targets")
+        # Copilot will implement continuous monitoring with appropriate delays
         pass
 
-class RiskManagementService:
+class DataProcessingService:
     """
-    Demonstrates function calling for risk assessment
+    Demonstrates function calling for data processing and analysis
     """
 
-    def calculate_position_risk(self, symbol: str, quantity: int, current_portfolio: Dict[str, int]) -> Dict[str, Any]:
+    def clean_and_validate_tickets(self, raw_tickets: List[Dict[str, Any]]) -> List[TicketInfo]:
         """
-        Calculate risk metrics for a potential trade
+        Clean and validate raw ticket data
 
         Args:
-            symbol: Stock symbol
-            quantity: Proposed trade quantity
-            current_portfolio: Current portfolio positions
+            raw_tickets: Raw ticket data from scraping
 
         Returns:
-            Risk assessment including concentration risk, VAR, etc.
+            Validated and cleaned TicketInfo objects
         """
-        logging.info(f"Calculating position risk for {quantity} shares of {symbol}")
-        # Copilot will implement sophisticated risk calculations
+        logging.info(f"Processing {len(raw_tickets)} raw ticket records")
+        # Copilot will implement data cleaning and validation logic
         pass
 
-    def validate_trade_limits(self, trade: Trade, trader_limits: Dict[str, Any]) -> bool:
+    def detect_price_changes(self, current_tickets: List[TicketInfo],
+                           historical_data: List[TicketInfo]) -> List[Dict[str, Any]]:
         """
-        Validate trade against risk limits
+        Detect price changes between current and historical data
 
         Args:
-            trade: Proposed trade
-            trader_limits: Risk limits for the trader
+            current_tickets: Current ticket data
+            historical_data: Historical ticket data for comparison
 
         Returns:
-            True if trade is within limits
+            List of price change events
         """
-        logging.info(f"Validating trade limits for {trade.symbol}")
-        # Copilot will implement limit checking logic
+        logging.info("Analyzing price changes")
+        # Copilot will implement price comparison algorithms
         pass
 
-class TradingStrategy(ABC):
+    def generate_availability_report(self, tickets: List[TicketInfo],
+                                   time_range: timedelta = timedelta(days=7)) -> Dict[str, Any]:
+        """
+        Generate availability report for tickets
+
+        Args:
+            tickets: Ticket data to analyze
+            time_range: Time range for the report
+
+        Returns:
+            Comprehensive availability analysis report
+        """
+        logging.info(f"Generating availability report for {len(tickets)} tickets")
+        # Copilot will implement reporting and analytics
+        pass
+
+class NotificationService:
+    """
+    Demonstrates function calling for user notifications
+    """
+
+    def send_ticket_alert(self, ticket: TicketInfo, user_preferences: Dict[str, Any]) -> bool:
+        """
+        Send notification when desired tickets become available
+
+        Args:
+            ticket: Ticket information
+            user_preferences: User notification preferences
+
+        Returns:
+            True if notification was sent successfully
+        """
+        logging.info(f"Sending alert for {ticket.event_name}")
+        # Copilot will implement multiple notification channels
+        pass
+
+    def send_price_drop_alert(self, ticket: TicketInfo, old_price: Decimal,
+                            new_price: Decimal) -> bool:
+        """
+        Send notification when ticket prices drop
+
+        Args:
+            ticket: Ticket information
+            old_price: Previous price
+            new_price: New lower price
+
+        Returns:
+            True if notification was sent successfully
+        """
+        logging.info(f"Price drop alert: {ticket.event_name} from {old_price} to {new_price}")
+        # Copilot will implement price drop notifications
+        pass
+
+class ScrapingStrategy(ABC):
     """
     Abstract strategy demonstrating the Strategy pattern
-    Custom instructions specify using this pattern for algorithms
+    Custom instructions specify using this pattern for different ticket sites
     """
 
     @abstractmethod
-    def should_buy(self, symbol: str, market_data: Dict[str, Any]) -> bool:
-        """Determine if symbol should be bought"""
+    def can_handle_site(self, url: str) -> bool:
+        """Determine if this strategy can handle the given site"""
         pass
 
     @abstractmethod
-    def should_sell(self, symbol: str, market_data: Dict[str, Any]) -> bool:
-        """Determine if symbol should be sold"""
+    def extract_tickets(self, html_content: str) -> List[TicketInfo]:
+        """Extract ticket information from site-specific HTML"""
         pass
 
     @abstractmethod
-    def calculate_quantity(self, symbol: str, available_capital: Money) -> int:
-        """Calculate appropriate trade quantity"""
+    def get_selectors(self) -> Dict[str, str]:
+        """Get CSS selectors for this specific site"""
+        pass
+
+    @abstractmethod
+    def get_rate_limit(self) -> float:
+        """Get appropriate rate limit for this site"""
         pass
 ```
 
@@ -244,18 +340,18 @@ class TradingStrategy(ABC):
 
 1. Open VS Code Settings or Copilot configuration
 2. Show repository-level custom instructions setup
-3. Paste the financial domain instructions
+3. Paste the web scraping domain instructions
 4. Explain how this guides all Copilot behavior
 
-**Key Message:** _"Custom instructions ensure Copilot follows your team's specific requirements and domain expertise"_
+**Key Message:** _"Custom instructions ensure Copilot follows your team's web scraping best practices and domain expertise"_
 
 #### Step B: Demonstrate Instruction Impact
 
 **Before/After Comparison:**
 
 - Show code generation without custom instructions
-- Apply financial domain instructions
-- Show how the same prompt now produces domain-specific code
+- Apply web scraping domain instructions
+- Show how the same prompt now produces domain-specific code with proper rate limiting, error handling, and data validation
 
 ### 2. Function Calling Intelligence (12 minutes)
 
@@ -264,74 +360,75 @@ class TradingStrategy(ABC):
 **Primary Demo Prompt:**
 
 ```text
-Create a MovingAverageStrategy that implements the TradingStrategy interface
-and uses the MarketDataService to make trading decisions
+Create a TicketMasterStrategy that implements the ScrapingStrategy interface
+and uses the WebScrapingService to extract concert and event ticket data
 ```
 
 **Expected Copilot Behavior:**
 
-- ✅ Implements TradingStrategy interface correctly
-- ✅ Calls MarketDataService methods appropriately
-- ✅ Uses Money class for financial calculations
-- ✅ Includes proper error handling and logging
-- ✅ Follows financial domain custom instructions
+- ✅ Implements ScrapingStrategy interface correctly
+- ✅ Calls WebScrapingService methods appropriately
+- ✅ Uses TicketInfo class for structured data
+- ✅ Includes proper rate limiting and error handling
+- ✅ Follows web scraping domain custom instructions
 
 #### Step B: Complex Function Orchestration
 
 **Advanced Demo Prompt:**
 
 ```text
-Create a complete trading engine that:
-1. Uses multiple strategies to evaluate trades
-2. Calls risk management for validation
-3. Executes trades through the market data service
-4. Logs all decisions for audit compliance
-5. Handles errors and market closures gracefully
+Create a complete ticket monitoring system that:
+1. Uses multiple scraping strategies for different ticket sites
+2. Calls data processing services for validation and analysis
+3. Monitors ticket availability and price changes in real-time
+4. Sends notifications when desired tickets become available
+5. Handles rate limiting, errors, and site blocking gracefully
 ```
 
 **Expected Intelligent Function Calling:**
 
-- ✅ Orchestrates multiple services correctly
-- ✅ Calls functions in logical sequence
-- ✅ Handles inter-service dependencies
-- ✅ Implements error handling and rollbacks
-- ✅ Maintains audit trails
+- ✅ Orchestrates multiple scraping services correctly
+- ✅ Calls functions in logical sequence with proper delays
+- ✅ Handles inter-service dependencies and data flow
+- ✅ Implements error handling and retry mechanisms
+- ✅ Maintains audit trails and monitoring logs
 
 ### 3. Domain-Specific Code Generation (10 minutes)
 
-#### Step A: Financial Compliance Features
+#### Step A: Web Scraping Compliance Features
 
 **Compliance-Focused Prompt:**
 
 ```text
-Add comprehensive audit logging and compliance features to the trading system
-including trade reporting, risk monitoring, and regulatory compliance checks
+Add comprehensive logging and ethical scraping features to the ticket monitoring system
+including robots.txt compliance, rate limiting enforcement, and user-agent rotation
 ```
 
 **Expected Compliance Code:**
 
-- Audit trail implementation
-- Regulatory reporting features
-- Risk monitoring and alerts
-- Compliance validation checks
-- Data retention policies
+- Robots.txt parsing and compliance
+- Rate limiting with backoff strategies
+- User-agent rotation and management
+- Request caching and deduplication
+- Error tracking and monitoring
 
 #### Step B: Performance and Scalability
 
 **Performance Optimization Prompt:**
 
 ```text
-Optimize the trading system for high-frequency trading with real-time
-market data processing and sub-millisecond execution requirements
+Optimize the ticket monitoring system for high-volume scraping with concurrent
+processing, intelligent caching, and real-time notification delivery
 ```
 
 **Expected Optimizations:**
 
-- Async/await patterns for performance
-- Connection pooling for market data
-- Caching strategies for frequently accessed data
-- Memory-efficient data structures
+- Async/await patterns for concurrent scraping
+- Connection pooling for HTTP requests
+- Intelligent caching strategies for ticket data
+- Queue systems for batch processing
 - Performance monitoring and metrics
+- Memory-efficient data structures
 
 ### 4. Custom Instruction Compliance Demo (8 minutes)
 
@@ -340,25 +437,25 @@ market data processing and sub-millisecond execution requirements
 **Test Prompts:**
 
 ```text
-Create a new portfolio management service
+Create a new ticket price tracking service
 ```
 
 ```text
-Add payment processing functionality
+Add user notification preferences management
 ```
 
 ```text
-Implement user authentication for the trading platform
+Implement proxy rotation for large-scale scraping
 ```
 
 **Demonstrate that Copilot automatically:**
 
-- ✅ Uses Decimal for all financial amounts
-- ✅ Includes comprehensive type hints
-- ✅ Implements proper logging
-- ✅ Follows architectural patterns
-- ✅ Includes security considerations
-- ✅ Adds audit trailing
+- ✅ Uses proper data validation with Pydantic models
+- ✅ Includes comprehensive type hints and docstrings
+- ✅ Implements proper rate limiting and delays
+- ✅ Follows architectural patterns (Strategy, Observer)
+- ✅ Includes ethical scraping considerations
+- ✅ Adds comprehensive logging and monitoring
 
 ---
 
@@ -366,61 +463,61 @@ Implement user authentication for the trading platform
 
 ### Intelligent Context Selection
 
-| Scenario               | Function Selection                                    | Context Understanding             |
-| ---------------------- | ----------------------------------------------------- | --------------------------------- |
-| **Trading Decision**   | Calls market data → risk assessment → execution       | Understands business workflow     |
-| **Portfolio Analysis** | Calls data services → calculation → reporting         | Sequences operations logically    |
-| **Risk Management**    | Calls position analysis → limit validation → alerting | Implements safety checks          |
-| **Audit Reporting**    | Calls data retrieval → aggregation → formatting       | Maintains compliance requirements |
+| Scenario                    | Function Selection                                      | Context Understanding                |
+| --------------------------- | ------------------------------------------------------- | ------------------------------------ |
+| **Ticket Monitoring**       | Calls scraping service → data validation → notification | Understands monitoring workflow      |
+| **Price Analysis**          | Calls data services → comparison → alert generation     | Sequences operations logically       |
+| **Site Strategy Selection** | Calls strategy detection → scraping → data processing   | Implements intelligent site handling |
+| **Compliance Checking**     | Calls robots.txt → rate limit → ethical validation      | Maintains ethical scraping standards |
 
 ### Advanced Function Orchestration
 
 **🧠 What Copilot Understands:**
 
-- ✅ Function dependencies and call ordering
-- ✅ Error handling and rollback scenarios
-- ✅ Data flow between service calls
-- ✅ Business logic constraints
-- ✅ Performance and scalability requirements
+- ✅ Function dependencies and call ordering for web scraping workflows
+- ✅ Error handling and retry scenarios for unreliable websites
+- ✅ Data flow between scraping, processing, and notification services
+- ✅ Ethical scraping constraints and rate limiting requirements
+- ✅ Performance and scalability requirements for high-volume monitoring
 
 ---
 
 ## Custom Instructions for Different Domains
 
-### Healthcare Domain Example
+### E-commerce Scraping Domain Example
 
 ```text
-# GitHub Copilot Custom Instructions: Healthcare Systems
+# GitHub Copilot Custom Instructions: E-commerce Price Monitoring
 
 **Compliance Requirements:**
-- Follow HIPAA guidelines for all patient data handling
-- Include consent tracking for all data operations
-- Use encryption for all sensitive data storage and transmission
-- Implement audit logging for all patient data access
+- Respect robots.txt and website terms of service
+- Implement rate limiting to avoid overloading servers
+- Use proper User-Agent headers and session management
+- Include data validation and sanitization for all scraped content
 
 **Code Standards:**
-- Use strongly typed patient identifiers
-- Include data validation for all medical inputs
-- Implement proper error handling without exposing patient data
-- Follow HL7 FHIR standards for healthcare data exchange
+- Use structured data models for product information
+- Implement retry mechanisms with exponential backoff
+- Include comprehensive logging for audit trails
+- Follow ethical scraping practices and legal compliance
 ```
 
-### E-commerce Domain Example
+### Data Analytics Platform Example
 
 ```text
-# GitHub Copilot Custom Instructions: E-commerce Platform
+# GitHub Copilot Custom Instructions: Data Analytics Platform
 
 **Business Rules:**
-- Include inventory checks before order processing
-- Implement payment processing with PCI compliance
-- Add order tracking and status management
-- Include customer notification systems
+- Include data lineage tracking for all transformations
+- Implement data quality checks and validation pipelines
+- Add performance monitoring for ETL processes
+- Include data governance and privacy compliance
 
 **Performance Requirements:**
-- Optimize for high traffic during sales events
-- Implement caching for product catalogs
-- Use async processing for order fulfillment
-- Include monitoring for conversion funnels
+- Optimize for large dataset processing with parallel execution
+- Implement caching for frequently accessed analytics
+- Use streaming processing for real-time data analysis
+- Include monitoring for data pipeline health and performance
 ```
 
 ---
@@ -429,16 +526,16 @@ Implement user authentication for the trading platform
 
 For enterprise-grade customization:
 
-1. **"Set up custom instructions for our Django REST API development team"**
-2. **"Create domain-specific instructions for IoT device management systems"**
-3. **"Implement custom instructions for cloud-native microservices architecture"**
-4. **"Configure instructions for machine learning model deployment pipelines"**
-5. **"Set up instructions for blockchain and cryptocurrency applications"**
-6. **"Create instructions for real-time gaming and simulation systems"**
-7. **"Implement instructions for enterprise security and compliance systems"**
-8. **"Configure instructions for data engineering and analytics platforms"**
-9. **"Set up instructions for mobile app development with React Native"**
-10. **"Create instructions for DevOps automation and infrastructure management"**
+1. **"Set up custom instructions for our web scraping and data extraction team"**
+2. **"Create domain-specific instructions for social media monitoring systems"**
+3. **"Implement custom instructions for competitive intelligence automation"**
+4. **"Configure instructions for content aggregation and curation platforms"**
+5. **"Set up instructions for market research and sentiment analysis tools"**
+6. **"Create instructions for real-time news and event monitoring systems"**
+7. **"Implement instructions for price comparison and e-commerce analytics"**
+8. **"Configure instructions for SEO and digital marketing automation"**
+9. **"Set up instructions for API integration and data pipeline development"**
+10. **"Create instructions for automated testing and quality assurance systems"**
 
 ---
 
@@ -446,10 +543,10 @@ For enterprise-grade customization:
 
 After this demo, your audience should understand:
 
-✅ **Customization is powerful** - AI adapts to team-specific requirements
-✅ **Function calling is intelligent** - AI understands business workflows
-✅ **Domain expertise matters** - Custom instructions encode team knowledge
-✅ **Consistency is automatic** - Standards are enforced across all development
+✅ **Customization is powerful** - AI adapts to team-specific web scraping requirements
+✅ **Function calling is intelligent** - AI understands data extraction workflows
+✅ **Domain expertise matters** - Custom instructions encode scraping best practices
+✅ **Consistency is automatic** - Ethical scraping standards enforced across development
 ✅ **Enterprise ready** - Professional governance and compliance features
 
 ---
@@ -472,10 +569,10 @@ After this demo, your audience should understand:
 
 ### If domain expertise seems shallow
 
-- Enhance custom instructions with more detail
-- Provide more domain-specific examples
-- Use industry-standard terminology consistently
-- Ask for explanations of domain concepts
+- Enhance custom instructions with more web scraping details
+- Provide more domain-specific examples and use cases
+- Use industry-standard terminology for data extraction
+- Ask for explanations of scraping and automation concepts
 
 ---
 
@@ -513,11 +610,11 @@ After this demo, your audience should understand:
 
 ## Next Steps for Your Team
 
-1. **Audit current practices** - Identify team coding standards and patterns
-2. **Define custom instructions** - Create domain-specific guidance
-3. **Test and iterate** - Refine instructions based on results
-4. **Train team members** - Show how to leverage customization
+1. **Audit current practices** - Identify team web scraping standards and patterns
+2. **Define custom instructions** - Create domain-specific guidance for data extraction
+3. **Test and iterate** - Refine instructions based on scraping results
+4. **Train team members** - Show how to leverage customization for data projects
 5. **Measure effectiveness** - Track consistency and productivity improvements
-6. **Scale organization-wide** - Expand successful patterns to other teams
+6. **Scale organization-wide** - Expand successful patterns to other data teams
 
-**📁 Files needed**: Save this markdown file and prepare your team's specific custom instructions examples for demonstration.
+**📁 Files needed**: Save this markdown file and prepare your team's specific web scraping custom instructions examples for demonstration.
