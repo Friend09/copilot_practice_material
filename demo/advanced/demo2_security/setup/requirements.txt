@@ -1,0 +1,6 @@
+flask
+requests
+pyjwt
+bcrypt
+sqlalchemy
+psycopg2-binary

@@ -16,17 +16,26 @@ These demos go beyond basic code completion to show Copilot as an **intelligent 
 
 ---
 
-## 📁 Demo Files Overview
+## 📁 Ready-to-Run Demo Structure
 
-| Demo                              | Focus Area                           | Best For                       | Duration  |
-| --------------------------------- | ------------------------------------ | ------------------------------ | --------- |
-| `demo1_agent_mode.md`             | Agent Mode & Multi-File Intelligence | Showing autonomous development | 10-15 min |
-| `demo2_security.md`               | AI Security Intelligence             | Security-conscious audiences   | 8-12 min  |
-| `demo3_context_understanding.md`  | Advanced Context & Architecture      | Technical architects           | 12-18 min |
-| `demo4_custom_instructions.md`    | Function Calling & Web Scraping      | Data extraction teams          | 10-15 min |
-| `demo5_code_review.md`            | AI-Powered Code Review               | QA and development teams       | 8-12 min  |
-| `demo6_extensions_integration.md` | DevOps Tool Integration              | DevOps and platform teams      | 15-20 min |
-| `demo7_vscode_features.md`        | VS Code Enterprise Features          | Enterprise teams               | 15-20 min |
+Each demo is now organized in its own folder with everything you need:
+
+| Demo Folder                     | Focus Area                           | Best For                       | Duration  |
+| ------------------------------- | ------------------------------------ | ------------------------------ | --------- |
+| `demo1_agent_mode/`             | Agent Mode & Multi-File Intelligence | Showing autonomous development | 15-20 min |
+| `demo2_security/`               | AI Security Intelligence             | Security-conscious audiences   | 12-15 min |
+| `demo3_context_understanding/`  | Advanced Context & Architecture      | Technical architects           | 15-18 min |
+| `demo4_custom_instructions/`    | Custom Instructions & Team Standards | Enterprise development teams   | 12-15 min |
+| `demo5_code_review/`            | AI-Powered Code Review               | QA and development teams       | 10-12 min |
+| `demo6_extensions_integration/` | DevOps Tool Integration              | DevOps and platform teams      | 15-20 min |
+| `demo7_vscode_features/`        | VS Code Enterprise Features          | Enterprise teams               | 15-20 min |
+
+### Each Demo Folder Contains:
+
+- **README.md** - Clear step-by-step demo instructions
+- **setup/** - Pre-created files ready to use
+- **prompts.md** - Exact prompts to copy-paste
+- **expected_results/** - What Copilot should generate
 
 ---
 
@@ -35,22 +44,32 @@ These demos go beyond basic code completion to show Copilot as an **intelligent 
 ### Prerequisites
 
 1. **GitHub Copilot** with access to advanced features
-2. **Cursor** or **VS Code** with Copilot Chat extension
+2. **VS Code** with Copilot Chat extension
 3. **Agent Mode** enabled (public beta or enterprise)
 4. **Internet connection** for live demonstrations
 
-### Setup (5 minutes)
+### Setup (2 minutes)
 
 ```bash
-# Navigate to the advanced demo directory
-cd demo/advanced
+# Navigate to any demo folder
+cd demo/advanced/demo1_agent_mode
 
-# Ensure Copilot is active
-# Open Copilot Chat (Ctrl/Cmd + Shift + I)
+# Each demo is self-contained with:
+# - README.md (step-by-step instructions)
+# - setup/ folder (pre-created files)
+# - prompts.md (exact prompts to use)
 
-# Test basic functionality
-# Type: "Hello Copilot, are you ready for advanced demos?"
+# Open the demo README for instructions
+code README.md
 ```
+
+### Running Any Demo
+
+1. **Choose a demo** from the table above
+2. **Navigate to the demo folder**
+3. **Follow the README.md** for step-by-step instructions
+4. **Use prompts.md** for exact copy-paste prompts
+5. **Demo duration**: 10-20 minutes each
 
 ---
 

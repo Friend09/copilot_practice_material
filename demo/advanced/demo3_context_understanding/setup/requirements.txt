@@ -1,0 +1,8 @@
+fastapi
+sqlalchemy
+pydantic
+uvicorn
+pytest
+redis
+psycopg2-binary
+alembic
