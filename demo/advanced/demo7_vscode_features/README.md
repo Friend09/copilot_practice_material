@@ -526,46 +526,51 @@ Modes change how Copilot interacts with you and processes your requests.
 
 ## 5. 💬 Chat Modes
 
-Chat Modes are predefined configurations that enable you to tailor chat behavior for specific workflows or personas. VS Code comes with built-in modes and supports custom chat modes.
+Chat modes are predefined configurations that enable you to tailor the chat behavior in Visual Studio Code for specific workflows or have chat assume a specific persona. VS Code comes with three built-in chat modes: Ask, Edit, and Agent. You can create custom chat modes for specialized workflows like planning features, conducting code reviews, or researching implementation options.
+
+**Note**: Custom chat modes are available as of VS Code release 1.101 and are currently in preview.
+
+### Switching Between Chat Modes
+
+To switch between chat modes:
+
+1. Open the Chat view (⌃⌘I / Ctrl+Shift+I)
+2. Select the desired mode from the chat mode dropdown list
+3. The mode affects how Copilot processes your requests and responds
 
 ### Built-in Chat Modes
 
-#### A. **Ask Mode**
+VS Code provides three built-in chat modes, each optimized for specific use cases:
 
-- Optimized for answering questions about your codebase
-- Best for understanding code and exploring technologies
-- General coding and technology concept discussions
-
-#### B. **Edit Mode**
-
-- Optimized for making code edits across multiple files
-- VS Code directly applies changes in the editor
-- Use when you have well-defined changes to make
-
-#### C. **Agent Mode**
-
-- Autonomous edits across multiple files
-- Can run terminal commands and use tools
-- Best for less well-defined tasks requiring exploration
+| Mode           | Description                                                                                                                                                         | Best Use Cases                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Ask Mode**   | Optimized for answering questions about your codebase, coding, and general technology concepts.                                                                     | Understanding how code works, brainstorming software design ideas, exploring new technologies           |
+| **Edit Mode**  | Optimized for making code edits across multiple files in your project. VS Code directly applies the code changes in the editor, where you can review them in-place. | Coding tasks when you have a good understanding of the changes you want to make and which files to edit |
+| **Agent Mode** | Optimized for making autonomous edits across multiple files in your project. Can run terminal commands and use tools.                                               | Less well-defined tasks that might require exploration, running commands, and using multiple tools      |
 
 ### Custom Chat Modes
 
-Create specialized chat modes for your workflow needs.
+The built-in chat modes provide general-purpose configurations for chat in VS Code. For a more tailored chat experience, you can create your own chat modes.
 
-#### Creating Custom Chat Modes
+Custom chat modes consist of a set of instructions and tools that are applied when you switch to that mode. For example, a "Plan" chat mode could include instructions for generating an implementation plan and only use read-only tools. By creating a custom chat mode, you can quickly switch to that specific configuration without having to manually select relevant tools and instructions each time.
 
-1. **Access Chat Mode Configuration:**
+Custom chat modes are defined in a `.chatmode.md` Markdown file, and can be stored in your workspace for others to use, or in your user profile, where you can reuse them across different workspaces.
 
-   - In Chat view, select Configure Chat → Modes
-   - Choose "Create new custom chat mode file"
-   - Or use Command Palette: `Chat: New Mode File`
+#### Chat Mode File Structure
 
-2. **Choose Storage Location:**
+Chat mode files are Markdown files and use the `.chatmode.md` extension with this structure:
 
-   - **Workspace**: `.github/chatmodes/` folder (team-wide)
-   - **User Profile**: Personal modes synced across devices
+##### Header (optional): YAML frontmatter
 
-3. **Chat Mode File Structure (.chatmode.md):**
+- `description`: A brief description of the chat mode. This description is displayed as placeholder text in the chat input field and when you hover the mode in the chat mode dropdown list.
+- `tools`: A list of tool or tool set names that are available for this chat mode. This can include built-in tools, tool sets, MCP tools, or tools contributed by extensions. Use the Configure Tools action to select the tools from the list of available tools in your workspace.
+- `model`: The AI model to use when running the prompt. If not specified, the currently selected model in model picker is used.
+
+##### Body: Chat mode details and instructions in Markdown format
+
+This is where you provide specific prompts, guidelines, or any other relevant information that you want the AI to follow when in this chat mode.
+
+You can reference instructions files by using Markdown links. The chat mode instructions will complement whatever is specified in the chat prompt.
 
 ```markdown
 ---
@@ -578,6 +583,35 @@ model: Claude Sonnet 4
 
 Your specific instructions and guidelines for this chat mode.
 Include prompts, workflows, and any relevant information.
+
+You can reference [custom instructions](../instructions/coding-standards.md) files.
+```
+
+#### Example: Planning Chat Mode
+
+The following example shows a "Plan" chat mode file that generates an implementation plan and doesn't make any code edits:
+
+**File**: `.github/chatmodes/plan.chatmode.md`
+
+```markdown
+---
+description: Generate an implementation plan for new features or refactoring existing code.
+tools: ["codebase", "fetch", "findTestFiles", "githubRepo", "search", "usages"]
+model: Claude Sonnet 4
+---
+
+# Planning mode instructions
+
+You are in planning mode. Your task is to generate an implementation plan for a new feature or for refactoring existing code.
+
+Don't make any code edits, just generate a plan.
+
+The plan consists of a Markdown document that describes the implementation plan, including the following sections:
+
+- **Overview**: A brief description of the feature or refactoring task.
+- **Requirements**: A list of requirements for the feature or refactoring task.
+- **Implementation Steps**: A detailed list of steps to implement the feature or refactoring task.
+- **Testing**: A list of tests that need to be implemented to verify the feature or refactoring task.
 ```
 
 #### Example: Code Review Chat Mode
@@ -626,122 +660,421 @@ You are in code review mode. Focus on:
 Provide specific, actionable feedback with code examples.
 ```
 
-#### Example: Planning Chat Mode
+#### Creating a Custom Chat Mode
 
-**File**: `.github/chatmodes/planning.chatmode.md`
+1. **Access Chat Mode Configuration:**
 
-```markdown
----
-description: Generate implementation plans without making code changes
-tools: ["codebase", "search", "githubRepo", "usages"]
-model: Claude Sonnet 4
----
+   - In the Chat view, select Configure Chat > Modes, and then select "Create new custom chat mode file"
+   - Alternatively, use the `Chat: New Mode File` command in the Command Palette (⇧⌘P / Ctrl+Shift+P)
 
-# Planning Mode
+2. **Choose Storage Location:**
 
-You are in planning mode. Generate detailed implementation plans.
+   - **Workspace**: By default, workspace chat mode files are stored in the `.github/chatmodes` folder of your workspace. Add more prompt folders for your workspace with the `chat.modeFilesLocations` setting.
+   - **User Profile**: User chat mode files are stored in the current profile folder. You can sync your user chat mode files across multiple devices by using Settings Sync.
 
-## Planning Structure
+3. **Enter a Name**: This name is used in the chat mode dropdown list in the Chat view.
 
-### Overview
+4. **Configure the Chat Mode:**
+   - Provide the description and configure the list of available tools or tool sets in the Front Matter metadata
+   - Add instructions for the chat mode in the body of the file
 
-- Brief feature description
-- Goals and objectives
-- Success criteria
+#### Managing Chat Modes
 
-### Requirements Analysis
+**Edit Existing Modes:**
 
-- Functional requirements
-- Non-functional requirements
-- Dependencies and constraints
+- In the Chat view, select Configure Chat > Modes, and then select an existing chat mode from the list to modify it
+- Alternatively, use the `Chat: Configure Chat Modes` command from the Command Palette (⇧⌘P / Ctrl+Shift+P)
 
-### Technical Design
+**Share Team Modes:**
 
-- Architecture overview
-- Component breakdown
-- Data flow diagrams
-- API specifications
-
-### Implementation Steps
-
-1. Detailed step-by-step plan
-2. File creation/modification list
-3. Testing strategy
-4. Deployment considerations
-
-### Risk Assessment
-
-- Potential challenges
-- Mitigation strategies
-- Alternative approaches
-
-Do NOT make any code changes - only generate plans.
-```
-
-### Using Chat Modes
-
-1. **Switch Modes:**
-
-   - Open Chat view (Ctrl/Cmd + Shift + I)
-   - Use the chat mode dropdown
-   - Select your desired mode
-
-2. **Mode-Specific Behavior:**
-   - Each mode follows its configured instructions
-   - Uses specified tools and model
-   - Maintains consistent persona/workflow
-
-### Managing Chat Modes
-
-1. **Edit Existing Modes:**
-
-   - Configure Chat → Modes
-   - Select mode to modify
-   - Edit `.chatmode.md` file
-
-2. **Share Team Modes:**
-   - Store in `.github/chatmodes/`
-   - Commit to version control
-   - Team members get consistent experience
+- Store chat modes in `.github/chatmodes/`
+- Commit to version control
+- Team members get consistent experience across the workspace
 
 ---
 
 ## 6. 🌐 MCP Servers
 
-Model Context Protocol (MCP) servers provide additional context and capabilities.
+Model Context Protocol (MCP) is an open standard that lets AI models use external tools and services through a unified interface. In VS Code, MCP servers add tools for tasks like file operations, databases, or interacting with external APIs.
+
+**Note**: MCP support in VS Code is generally available starting from VS Code 1.102.
 
 ### What are MCP Servers?
 
-- External services that provide context to Copilot
-- Can include documentation, APIs, databases
-- Extend Copilot's knowledge beyond training data
+MCP servers provide additional capabilities and context to GitHub Copilot through:
 
-### Common MCP Servers
+- **Tools**: Executable functions for specific tasks (file operations, API calls, database queries)
+- **Resources**: Contextual information (documentation, files, database schemas)
+- **Prompts**: Preconfigured prompts for common tasks
+- **Elicitations**: Dynamic requests for additional user input
 
-- **Documentation servers**: Access to latest library docs
-- **API servers**: Real-time API information
-- **Database servers**: Schema and data context
-- **Custom servers**: Team-specific knowledge bases
+MCP servers can be:
 
-### Setting Up MCP Servers
+- **Local servers**: Running on your machine (stdio communication)
+- **Remote servers**: Accessible via HTTP/HTTPS (HTTP/SSE communication)
+- **Extension-provided**: Installed as part of VS Code extensions
 
-1. **Configure in VS Code settings:**
+### Prerequisites
 
-   ```json
-   {
-     "copilot.mcpServers": [
-       {
-         "name": "docs-server",
-         "url": "https://api.example.com/docs",
-         "enabled": true
-       }
-     ]
-   }
-   ```
+- Latest version of Visual Studio Code
+- Access to GitHub Copilot
+- MCP support enabled with `chat.mcp.enabled` setting (enabled by default)
 
-2. **Access through settings:**
-   - Click settings (⚙️) → MCP Servers
-   - Enable/disable servers as needed
+### Adding MCP Servers
+
+⚠️ **Security Warning**: MCP servers can run arbitrary code on your machine. Only add servers from trusted sources, and review the publisher and server configuration before starting it.
+
+#### Method 1: Install from VS Code Web Catalog
+
+1. Visit the [VS Code curated list of MCP servers](https://code.visualstudio.com/mcp)
+2. Browse available servers by category
+3. Click "Install in VS Code" for your desired server
+4. VS Code will prompt you to confirm installation
+
+#### Method 2: Manual Configuration
+
+1. **Open MCP Configuration:**
+
+   - Run `MCP: Open User Configuration` or `MCP: Open Workspace Folder Configuration` from Command Palette
+   - This creates/opens the `mcp.json` file
+
+2. **Add Server Configuration:**
+
+**Standard I/O (stdio) Server Example:**
+
+```json
+{
+  "servers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@github/github-mcp-server"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github-token}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "github-token",
+      "description": "GitHub Personal Access Token",
+      "password": true
+    }
+  ]
+}
+```
+
+**HTTP Server Example:**
+
+```json
+{
+  "servers": {
+    "api-server": {
+      "type": "http",
+      "url": "https://api.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${input:api-token}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "api-token",
+      "description": "API Access Token",
+      "password": true
+    }
+  ]
+}
+```
+
+#### Method 3: Command Line Installation
+
+```bash
+# Install to user profile
+code --add-mcp '{"name":"github","command":"npx","args":["-y","@github/github-mcp-server"]}'
+
+# For VS Code Insiders
+code-insiders --add-mcp '{"name":"github","command":"npx","args":["-y","@github/github-mcp-server"]}'
+```
+
+### Using MCP Tools in Agent Mode
+
+Once you have MCP servers installed:
+
+1. **Enable Agent Mode:**
+
+   - Open Chat view (⌃⌘I / Ctrl+Shift+I)
+   - Select "Agent" from the chat mode dropdown
+
+2. **Select Tools:**
+
+   - Click the Tools button in the chat input
+   - Select MCP tools alongside built-in tools
+   - Search for specific tools by typing
+
+3. **Use Tools in Prompts:**
+
+   - Tools are automatically invoked based on your requests
+   - Directly reference tools with `#toolName`
+   - Example: "List my GitHub issues" (automatically uses GitHub MCP tools)
+
+4. **Tool Confirmation:**
+   - VS Code prompts for confirmation before running MCP tools
+   - Review tool parameters before execution
+   - Use "Continue" dropdown to auto-approve tools for session/workspace
+
+**Tool Limit**: Maximum of 128 tools per chat request. Use the `github.copilot.chat.virtualTools.threshold` setting to enable virtual tools if you exceed this limit.
+
+### Using MCP Resources
+
+MCP servers can provide contextual resources (files, documentation, data):
+
+1. **Add Resources to Chat:**
+
+   - In Chat view, select "Add Context" > "MCP Resources"
+   - Choose resource type and provide parameters
+   - Resources appear as context in your chat
+
+2. **Browse Available Resources:**
+
+   - Run `MCP: Browse Resources` from Command Palette
+   - Or use `MCP: List Servers` > Browse Resources for specific server
+
+3. **Save Resources:**
+   - Tools can return resources in their responses
+   - Save resources to workspace by selecting "Save" or drag-and-drop to Explorer
+
+### Using MCP Prompts
+
+MCP servers can provide preconfigured prompts for common tasks:
+
+- **Invoke MCP Prompts:**
+
+  - Type `/` in chat followed by prompt name: `/mcp.servername.promptname`
+  - VS Code shows available prompts as you type
+  - Provide additional parameters when prompted
+
+- **Example:**
+
+  ```text
+  /mcp.github.create-issue
+  ```
+
+### MCP Server Management
+
+#### View Installed Servers
+
+1. **Extensions View:**
+
+   - Open Extensions view (⇧⌘X / Ctrl+Shift+X)
+   - Navigate to "MCP SERVERS - INSTALLED" section
+
+2. **Command Palette:**
+   - Run `MCP: Show Installed Servers`
+   - Run `MCP: List Servers` for detailed view
+
+#### Server Actions
+
+Right-click on server in Extensions view or use `MCP: List Servers` for actions:
+
+- **Start/Stop/Restart**: Control server state
+- **Show Output**: View server logs for debugging
+- **Uninstall**: Remove server configuration
+- **Trust/Untrust**: Manage server trust settings
+
+#### Auto-start Configuration
+
+Enable automatic server restart on configuration changes:
+
+```json
+{
+  "chat.mcp.autostart": true
+}
+```
+
+### Popular MCP Servers
+
+The [VS Code MCP catalog](https://code.visualstudio.com/mcp) provides a curated list of MCP servers organized by category. Here are some of the most useful servers available:
+
+#### Developer Tools
+
+- **[GitHub](https://github.com/github/github-mcp-server)**: Access GitHub repositories, issues, and pull requests through secure API integration
+- **[Figma](https://help.figma.com/hc/en-us/articles/32132100833559-Guide-to-the-Dev-Mode-MCP-Server)**: Extract UI content and generate code from Figma designs (requires latest desktop app)
+- **[Playwright](https://github.com/microsoft/playwright-mcp)**: Automate web browsers using accessibility trees for testing and data extraction
+- **[Sentry](https://github.com/getsentry/sentry-mcp)**: Retrieve and analyze application errors and performance issues from Sentry projects
+- **[Hugging Face](https://hf.co/mcp)**: Access models, datasets, and Spaces on the Hugging Face Hub
+- **[MarkItDown](https://github.com/microsoft/markitdown/tree/main/packages/markitdown-mcp)**: Convert various file formats (PDF, Word, Excel, images, audio) to Markdown
+- **[Microsoft Docs](https://github.com/microsoftdocs/mcp)**: Search and retrieve content from Microsoft Learn, Azure documentation, and official Microsoft technical resources
+- **[Context7](https://github.com/upstash/context7)**: Get up-to-date, version-specific documentation and code examples from any library or framework
+- **[Codacy](https://github.com/codacy/codacy-mcp-server)**: Comprehensive code quality and security analysis with SAST, secrets detection, and dependency scanning
+
+#### Productivity & Project Management
+
+- **[Notion](https://github.com/makenotion/notion-mcp-server)**: View, search, create, and update Notion pages and databases
+- **[Linear](https://linear.app/docs/mcp)**: Create, update, and track issues in Linear's project management platform
+- **[Asana](https://developers.asana.com/docs/using-asanas-model-control-protocol-mcp-server)**: Create and manage tasks, projects, and comments through the Asana API
+- **[Atlassian](https://www.atlassian.com/platform/remote-mcp-server)**: Connect to Jira and Confluence for issue tracking and documentation
+- **[Zapier](https://zapier.com/mcp)**: Create workflows and execute tasks across 30,000+ connected apps
+- **[Monday.com](https://github.com/mondaycom/monday-ai/tree/master/packages/monday-api-mcp)**: Project management integration with Monday.com for managing boards, items, and teams
+- **[Sequential Thinking](https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking)**: Break down complex tasks into manageable steps with transparent tracking
+- **[Memory](https://github.com/modelcontextprotocol/servers/tree/main/src/memory)**: Store and retrieve contextual information across sessions
+
+#### Data & Analytics
+
+- **[DuckDB](https://github.com/ktanaka101/mcp-server-duckdb)**: Query and analyze data in DuckDB databases locally and in the cloud
+- **[MongoDB](https://github.com/mongodb-js/mongodb-mcp-server)**: Database operations and management with document operations and aggregation pipelines
+- **[Neon](https://github.com/neondatabase-labs/mcp-server-neon)**: Manage and query Neon Postgres databases with natural language
+- **[PostHog](https://github.com/PostHog/mcp)**: Access PostHog analytics to create annotations and retrieve product usage insights
+- **[Microsoft Clarity](https://github.com/microsoft/clarity-mcp-server)**: Access Microsoft Clarity analytics data including heatmaps and session recordings
+- **[Apify](https://docs.apify.com/platform/integrations/mcp)**: Extract data from websites and automate workflows through Apify's Actor ecosystem
+- **[Firecrawl](https://github.com/mendableai/firecrawl-mcp-server)**: Advanced web scraping, crawling, search, and structured data extraction
+- **[Prisma Postgres](https://mcp.prisma.io/mcp)**: Database operations with Prisma ORM and PostgreSQL for schema management and migrations
+
+#### Business Services
+
+- **[Stripe](https://docs.stripe.com/mcp)**: Create customers, manage subscriptions, and generate payment links through Stripe APIs
+- **[PayPal](https://developer.paypal.com/tools/mcp-server/)**: Create invoices, process payments, and access transaction data through PayPal services
+- **[Square](https://developer.squareup.com/docs/mcp)**: Process payments and manage customers through Square's API ecosystem
+- **[Intercom](https://developers.intercom.com/docs/guides/mcp)**: Access customer conversations and support tickets for data analysis
+- **[Wix](https://www.wix.com/studio/developers/mcp-server)**: Build and manage Wix sites with eCommerce, bookings, and payment features
+- **[Webflow](https://github.com/webflow/mcp-server)**: Create and manage websites, collections, and content through Webflow's APIs
+
+#### Cloud & Infrastructure
+
+- **[Azure](https://github.com/azure/azure-mcp)**: Manage Azure resources, query databases, and access Azure services
+- **[Azure DevOps](https://github.com/microsoft/azure-devops-mcp)**: Manage Azure DevOps projects, work items, repositories, builds, releases, and test plans
+- **[Convex](https://stack.convex.dev/convex-mcp-server)**: Access Convex backend databases and functions for real-time data operations
+- **[Terraform](https://terraform-mcp-server.com)**: Infrastructure as Code management with plan, apply, destroy operations, and state management
+
+#### Installation Examples
+
+Most servers can be installed directly from the catalog with one click, or manually configured. Here are some examples:
+
+**GitHub Server (Manual Configuration):**
+
+```json
+{
+  "servers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@github/github-mcp-server"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github-token}"
+      }
+    }
+  }
+}
+```
+
+**Notion Server (One-Click Install):**
+Visit [VS Code MCP catalog](https://code.visualstudio.com/mcp) → Productivity → Notion → "Install Notion"
+
+**Browse Complete Catalog:**
+Visit the [VS Code MCP catalog](https://code.visualstudio.com/mcp) for the most up-to-date list of available servers, organized by category with direct installation links.
+
+### Configuration Format
+
+#### Server Configuration Properties
+
+**Standard I/O (stdio) servers:**
+
+- `type`: "stdio"
+- `command`: Executable command (must be in PATH or full path)
+- `args`: Array of command arguments
+- `env`: Environment variables object
+- `envFile`: Path to environment file
+
+**HTTP/SSE servers:**
+
+- `type`: "http" or "sse"
+- `url`: Server URL
+- `headers`: HTTP headers object
+
+#### Input Variables for Sensitive Data
+
+Use input variables to avoid hardcoding sensitive information:
+
+```json
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "api-key",
+      "description": "Your API Key",
+      "password": true
+    }
+  ]
+}
+```
+
+Reference in server config: `"${input:api-key}"`
+
+#### Server Naming Conventions
+
+- Use camelCase: `githubIntegration`, `databaseHelper`
+- Avoid whitespace and special characters
+- Use descriptive, unique names
+- Reflect functionality or brand
+
+### Synchronization Across Devices
+
+Enable MCP server synchronization with Settings Sync:
+
+1. Run `Settings Sync: Configure` from Command Palette
+2. Ensure "MCP Servers" is included in synchronized configurations
+3. Your MCP server configurations will sync across devices
+
+### Development and Debugging
+
+#### Debug Mode Configuration
+
+Add development configuration to server definition:
+
+```json
+{
+  "servers": {
+    "my-server": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "dev": {
+        "watch": "build/**/*.js",
+        "debug": { "type": "node" }
+      }
+    }
+  }
+}
+```
+
+Supports debugging for Node.js and Python servers.
+
+### Troubleshooting
+
+#### MCP Troubleshooting Issues
+
+1. **Server not starting:**
+
+   - Check server logs: `MCP: List Servers` > Show Output
+   - Verify command/path is correct
+   - Check environment variables and permissions
+
+2. **Docker servers not working:**
+
+   - Don't use detached mode (`-d` option)
+   - Server must run in foreground
+   - Verify container configuration
+
+3. **Tools not appearing:**
+
+   - Restart server: Right-click server > Restart
+   - Clear cached tools: `MCP: Reset Cached Tools`
+   - Check server trust: `MCP: Reset Trust`
+
+4. **128 tools limit error:**
+   - Deselect unnecessary tools in tools picker
+   - Enable virtual tools: `github.copilot.chat.virtualTools.threshold`
+   - Use tool sets to organize tools efficiently
 
 ---
 
@@ -820,22 +1153,95 @@ Automatically generate custom instructions based on your codebase.
 
 ### Exercise 5: Create Custom Chat Modes
 
-1. Create a code review chat mode
-2. Create a planning chat mode
-3. Test both modes with sample tasks
-4. Compare with built-in modes
+1. **Create a Planning Chat Mode:**
 
-### Exercise 6: Configure MCP Servers
+   - Open Chat view and select Configure Chat → Modes
+   - Choose "Create new custom chat mode file"
+   - Create a "plan.chatmode.md" file in `.github/chatmodes/`
+   - Configure with planning-specific tools: `['codebase', 'fetch', 'findTestFiles', 'githubRepo', 'search', 'usages']`
+   - Add instructions that focus on generating implementation plans without making code changes
 
-1. Set up an MCP server (if available)
-2. Test enhanced context capabilities
-3. Compare responses with/without MCP
+2. **Create a Code Review Chat Mode:**
 
-### Exercise 7: Generate Instructions
+   - Create "code-review.chatmode.md" with tools: `["codebase", "search", "usages", "findTestFiles"]`
+   - Include instructions for security analysis, performance review, and code quality checks
+   - Test the mode by asking it to review a code file
 
-1. Use the generate instructions feature
-2. Review and customize the output
-3. Apply to a sample project
+3. **Test Different Chat Modes:**
+
+   - Try the same development task in different modes (Ask, Edit, Agent, and your custom modes)
+   - Compare the responses and behavior
+   - Document which mode works best for different types of tasks
+
+4. **Share Team Chat Modes:**
+
+   - Commit your `.github/chatmodes/` folder to version control
+   - Test that team members can access the custom modes
+   - Gather feedback and iterate on the mode instructions
+
+### Exercise 6: Set Up and Use MCP Servers
+
+1. **Install MCP Server from Catalog:**
+
+   - Visit [VS Code MCP catalog](https://code.visualstudio.com/mcp)
+   - Choose a server based on your interests:
+     - **Developer Tools**: GitHub, Playwright, or Microsoft Docs
+     - **Productivity**: Notion, Linear, or Sequential Thinking
+     - **Data & Analytics**: DuckDB, MongoDB, or Firecrawl
+   - Click "Install in VS Code" and follow setup prompts
+   - Configure any required API keys or credentials
+
+2. **Manual MCP Server Setup:**
+
+   - Run `MCP: Open User Configuration` from Command Palette
+   - Add the GitHub MCP server configuration (see Popular MCP Servers section)
+   - Set up input variables for your GitHub token
+   - Test server installation using `MCP: List Servers`
+
+3. **Use MCP Tools in Agent Mode:**
+
+   - Enable Agent mode in Chat view
+   - Select Tools and choose your installed MCP tools
+   - Try specific prompts based on your server:
+     - GitHub: "List my recent repositories" or "Create a new issue"
+     - Notion: "Show my recent Notion pages"
+     - Sequential Thinking: "Break down this complex feature into steps"
+   - Observe tool confirmations and parameter editing
+
+4. **Explore MCP Resources and Prompts:**
+
+   - Use "Add Context" > "MCP Resources" in chat
+   - Try MCP prompts using `/mcp.servername.promptname` format
+   - Browse available resources with `MCP: Browse Resources`
+   - Save returned resources to your workspace
+
+### Exercise 7: Configure Tool Sets with MCP Tools
+
+1. **Create MCP-Enhanced Tool Set:**
+
+   - Open Configure Chat → Tool Sets
+   - Create a tool set that combines built-in tools with MCP tools
+   - Test the tool set in different chat modes
+
+### Exercise 8: Generate Instructions Automatically
+
+1. **Use Auto-Generation Feature:**
+
+   - Open Chat view and select Configure Chat → Generate Instructions
+   - Choose analysis scope (workspace or repository)
+   - Review the automatically generated instructions
+
+2. **Customize Generated Instructions:**
+
+   - Edit the generated instructions to match your team's needs
+   - Save to `.github/copilot-instructions.md`
+   - Test how the instructions affect code generation
+
+3. **Compare Manual vs Auto-Generated:**
+
+   - Create manual instructions for comparison
+   - Test both sets with similar code generation tasks
+   - Identify strengths and gaps in auto-generation
 
 ---
 
@@ -846,10 +1252,20 @@ After completing this demo, you should be able to:
 - ✅ Configure both workspace-wide and file-specific custom instructions
 - ✅ Create and use reusable prompt files with variables and YAML frontmatter
 - ✅ Select appropriate tool sets for your development stack
-- ✅ Switch between different Copilot modes effectively
-- ✅ Create and manage custom chat modes for specialized workflows
-- ✅ Set up and use MCP servers for additional context
-- ✅ Generate custom instructions automatically from your codebase
+- ✅ Switch between Ask, Edit, and Agent modes effectively
+- ✅ Create and manage custom chat modes with proper YAML frontmatter
+- ✅ Configure chat modes with specific tools and AI models
+- ✅ Use chat mode dropdown to switch between different configurations
+- ✅ Store custom chat modes for team sharing in workspace
+- ✅ Reference instruction files within chat modes for complementary behavior
+- ✅ Set up and configure MCP servers using multiple methods (catalog, manual, command-line)
+- ✅ Use MCP tools, resources, and prompts effectively in agent mode
+- ✅ Manage MCP server lifecycle (start, stop, restart, debug)
+- ✅ Configure server security and trust settings appropriately
+- ✅ Create tool sets that combine built-in and MCP tools
+- ✅ Troubleshoot common MCP server issues and debug problems
+- ✅ Generate custom instructions automatically from codebase analysis
+- ✅ Sync MCP configurations and custom settings across devices
 - ✅ Apply instructions using glob patterns for targeted file types
 - ✅ Sync custom instructions and prompt files across devices
 
@@ -905,26 +1321,70 @@ After completing this demo, you should be able to:
 7. **Custom chat modes not appearing:**
 
    - Verify file extension (`.chatmode.md`)
-   - Check file location (`.github/chatmodes` or user profile)
+   - Check file location (`.github/chatmodes/` for workspace, or user profile)
    - Ensure proper YAML frontmatter format
+   - Confirm VS Code version 1.101 or later (custom chat modes are in preview)
    - Restart VS Code if needed
 
 8. **Chat mode instructions ignored:**
 
-   - Check YAML frontmatter syntax
-   - Ensure description and tools are properly formatted
-   - Verify model specification is valid
+   - Check YAML frontmatter syntax for errors
+   - Ensure description and tools are properly formatted arrays/strings
+   - Verify model specification is valid (e.g., "Claude Sonnet 4", "GPT-4o")
+   - Test with a simple chat mode first to verify functionality
 
-9. **Glob patterns not working in instructions:**
+9. **Chat mode dropdown not showing custom modes:**
 
-   - Test glob patterns: `**/*.py` for all Python files, `src/**/*.ts` for TypeScript in src
-   - Use commas to separate multiple patterns: `**/*.ts,**/*.tsx`
-   - Ensure forward slashes in paths even on Windows
+   - Ensure the `.chatmode.md` file is saved and VS Code has reloaded
+   - Check that the `description` field is present in YAML frontmatter
+   - Verify file is in correct location: `.github/chatmodes/` or user profile
+   - Use the `chat.modeFilesLocations` setting to add additional folders if needed
+
+10. **Glob patterns not working in instructions:**
+
+    - Test glob patterns: `**/*.py` for all Python files, `src/**/*.ts` for TypeScript in src
+    - Use commas to separate multiple patterns: `**/*.ts,**/*.tsx`
+    - Ensure forward slashes in paths even on Windows
+
+11. **MCP servers not starting:**
+
+    - Check server logs: `MCP: List Servers` > Show Output
+    - Verify command/path is correct and executable exists
+    - Review environment variables and file permissions
+    - Ensure VS Code version 1.102+ for full MCP support
+
+12. **MCP tools not appearing in agent mode:**
+
+    - Restart MCP server: Right-click server > Restart
+    - Clear cached tools: `MCP: Reset Cached Tools`
+    - Verify server trust: `MCP: Reset Trust`
+    - Check that `chat.mcp.enabled` setting is true
+
+13. **MCP server configuration errors:**
+
+    - Validate JSON syntax in `mcp.json` file
+    - Use `MCP: Open User Configuration` or `MCP: Open Workspace Folder Configuration`
+    - Check input variable references: `${input:variable-id}`
+    - Review server naming conventions (use camelCase, avoid spaces)
+
+14. **Docker MCP servers not working:**
+
+    - Don't use detached mode (`-d` option) - server must run in foreground
+    - Verify container has proper stdio communication setup
+    - Check Docker container logs for startup errors
+
+15. **MCP tool confirmations and security:**
+
+    - Always review tool parameters before confirming execution
+    - Use "Continue" dropdown options to auto-approve trusted tools
+    - Only install MCP servers from trusted sources
+    - Reset trust settings if needed: `MCP: Reset Trust`
 
 ---
 
 ## 📚 Additional Resources
 
+- **[VS Code MCP Catalog](https://code.visualstudio.com/mcp)** - Curated list of MCP servers with one-click installation
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
 - [VS Code Copilot Extension Guide](https://code.visualstudio.com/docs/copilot/overview)
 - [VS Code Copilot Customization Overview](https://code.visualstudio.com/docs/copilot/customization/overview)
@@ -935,6 +1395,7 @@ After completing this demo, you should be able to:
 - [Language Models Documentation](https://code.visualstudio.com/docs/copilot/customization/language-models)
 - [MCP Servers Documentation](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 - [MCP Protocol Specification](https://modelcontextprotocol.io/)
+- [Official MCP Server Repository](https://github.com/modelcontextprotocol/servers)
 - [Prompt Engineering Best Practices](https://docs.github.com/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot)
 - [Awesome Copilot Community Examples](https://github.com/github/awesome-copilot)
 
