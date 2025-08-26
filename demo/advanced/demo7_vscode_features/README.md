@@ -18,8 +18,9 @@ Based on the GitHub Copilot chat settings menu, this demo covers:
 2. **Instructions** - Custom AI behavior configuration
 3. **Tool Sets** - Extended capabilities and integrations
 4. **Modes** - Different AI interaction modes
-5. **MCP Servers** - Model Context Protocol servers
-6. **Generate Instructions** - Auto-generated custom instructions
+5. **Chat Modes** - Custom and built-in chat mode configurations
+6. **MCP Servers** - Model Context Protocol servers
+7. **Generate Instructions** - Auto-generated custom instructions
 
 ---
 
@@ -47,26 +48,66 @@ Before starting, ensure you have:
 
 ## 1. 📝 Prompt Files
 
-Prompt Files allow you to create reusable prompt templates for common development tasks.
+Prompt Files are Markdown files that define reusable prompts for common development tasks like generating code, performing code reviews, or scaffolding project components. They are standalone prompts that you can run directly in chat, enabling the creation of a library of standardized development workflows.
 
 ### What are Prompt Files?
 
-- Reusable prompt templates stored as `.md` files
-- Can include variables and placeholders
+- Reusable prompt templates stored as `.prompt.md` files
+- Can include variables and placeholders using `${variableName}` syntax
 - Shareable across team members
-- Located in `.vscode/` or workspace root
+- Available in two scopes: workspace and user profile
+- Support YAML frontmatter for configuration
+
+### Prompt File Format:
+
+Prompt files use the `.prompt.md` extension and have this structure:
+
+```markdown
+---
+description: Short description of the prompt
+mode: ask | edit | agent (default)
+model: Specific language model to use
+tools: ["codebase", "search", "findTestFiles"]
+---
+
+# Prompt content in Markdown format
+
+Use variables like ${selection}, ${file}, ${workspaceFolder}
+Reference other files with [link](../path/to/file.md)
+```
+
+### Available Variables:
+
+- **Workspace variables**: `${workspaceFolder}`, `${workspaceFolderBasename}`
+- **Selection variables**: `${selection}`, `${selectedText}`
+- **File context variables**: `${file}`, `${fileBasename}`, `${fileDirname}`, `${fileBasenameNoExtension}`
+- **Input variables**: `${input:variableName}`, `${input:variableName:placeholder}`
 
 ### How to Create Prompt Files:
 
-1. **Create a prompt file:**
+1. **Enable prompt files:**
 
-   ```bash
-   mkdir -p .vscode/prompts
-   ```
+   - Enable the `chat.promptFiles` setting in VS Code
 
-2. **Example: Code Review Prompt (`code-review.md`):**
+2. **Create a new prompt file:**
+
+   - In Chat view: Configure Chat → Prompt Files → New prompt file
+   - Or use Command Palette: `Chat: New Prompt File`
+
+3. **Choose storage location:**
+
+   - **Workspace**: `.github/prompts/` folder (team-wide access)
+   - **User profile**: Personal prompts synced across devices
+
+4. **Example: Code Review Prompt (`code-review.prompt.md`):**
 
    ```markdown
+   ---
+   description: Comprehensive code review with security and performance focus
+   mode: ask
+   tools: ["codebase", "search"]
+   ---
+
    # Code Review Prompt
 
    Please review the following code for:
@@ -76,37 +117,67 @@ Prompt Files allow you to create reusable prompt templates for common developmen
    - Code quality and best practices
    - Documentation completeness
 
-   Focus on: {{language}} specific patterns
-   Severity level: {{severity}}
+   Focus on: ${input:language:programming language} specific patterns
+   Severity level: ${input:severity:high/medium/low}
 
    Code to review:
-   {{selection}}
+   ${selection}
    ```
 
-3. **Example: API Documentation Prompt (`api-docs.md`):**
+5. **Example: React Component Generator (`create-react-form.prompt.md`):**
 
    ```markdown
-   # API Documentation Generator
+   ---
+   description: Generate a React form component with validation
+   mode: edit
+   tools: ["codebase"]
+   ---
 
-   Generate comprehensive API documentation for:
-   {{selection}}
+   # React Form Component Generator
 
-   Include:
+   Create a React form component in ${file} with the following requirements:
 
-   - Endpoint descriptions
-   - Request/response examples
-   - Error codes
-   - Authentication requirements
+   - Form name: ${input:formName:MyForm}
+   - Fields: ${input:fields:name, email, message}
+   - Include form validation
+   - Use TypeScript if the project uses it
+   - Follow the project's existing component patterns
+
+   Reference existing components: [Button](../components/Button.tsx)
    ```
 
 ### Using Prompt Files:
 
-1. Select code in your editor
-2. Open Copilot Chat
-3. Click settings (⚙️) → Prompt Files
-4. Choose your template
-5. Fill in any variables
-6. Execute the prompt
+1. **In Chat view:**
+
+   - Type `/` followed by the prompt file name: `/code-review`
+   - Pass additional parameters: `/create-react-form: formName=ContactForm`
+
+2. **From Command Palette:**
+
+   - Run `Chat: Run Prompt` command
+   - Select prompt file from Quick Pick
+
+3. **From Editor:**
+   - Open the `.prompt.md` file
+   - Click the play button in the editor title
+   - Choose to run in current or new chat session
+
+### Managing Prompt Files:
+
+- **Workspace prompts**: Stored in `.github/prompts/` by default
+- **Additional locations**: Configure with `chat.promptFilesLocations` setting
+- **User prompts**: Stored in VS Code profile folder
+- **Sync across devices**: Enable Settings Sync for "Prompts and Instructions"
+
+### Tips for Effective Prompt Files:
+
+- Clearly describe what the prompt should accomplish
+- Provide examples of expected input and output
+- Use Markdown links to reference custom instructions
+- Take advantage of built-in variables like `${selection}`
+- Use input variables for flexible, reusable prompts
+- Test prompts using the editor play button
 
 ---
 
@@ -264,7 +335,189 @@ Modes change how Copilot interacts with you and processes your requests.
 
 ---
 
-## 5. 🌐 MCP Servers
+## 5. 💬 Chat Modes
+
+Chat Modes are predefined configurations that enable you to tailor chat behavior for specific workflows or personas. VS Code comes with built-in modes and supports custom chat modes.
+
+### Built-in Chat Modes:
+
+#### A. **Ask Mode**
+
+- Optimized for answering questions about your codebase
+- Best for understanding code and exploring technologies
+- General coding and technology concept discussions
+
+#### B. **Edit Mode**
+
+- Optimized for making code edits across multiple files
+- VS Code directly applies changes in the editor
+- Use when you have well-defined changes to make
+
+#### C. **Agent Mode**
+
+- Autonomous edits across multiple files
+- Can run terminal commands and use tools
+- Best for less well-defined tasks requiring exploration
+
+### Custom Chat Modes:
+
+Create specialized chat modes for your workflow needs.
+
+#### Creating Custom Chat Modes:
+
+1. **Access Chat Mode Configuration:**
+
+   - In Chat view, select Configure Chat → Modes
+   - Choose "Create new custom chat mode file"
+   - Or use Command Palette: `Chat: New Mode File`
+
+2. **Choose Storage Location:**
+
+   - **Workspace**: `.github/chatmodes/` folder (team-wide)
+   - **User Profile**: Personal modes synced across devices
+
+3. **Chat Mode File Structure (.chatmode.md):**
+
+```markdown
+---
+description: Brief description of the chat mode
+tools: ["codebase", "search", "findTestFiles"]
+model: Claude Sonnet 4
+---
+
+# Custom Mode Instructions
+
+Your specific instructions and guidelines for this chat mode.
+Include prompts, workflows, and any relevant information.
+```
+
+#### Example: Code Review Chat Mode
+
+**File**: `.github/chatmodes/code-review.chatmode.md`
+
+```markdown
+---
+description: Comprehensive code review with security and performance focus
+tools: ["codebase", "search", "usages", "findTestFiles"]
+model: Claude Sonnet 4
+---
+
+# Code Review Mode
+
+You are in code review mode. Focus on:
+
+## Security Analysis
+
+- Look for security vulnerabilities
+- Check for hardcoded secrets
+- Validate input sanitization
+- Review authentication/authorization
+
+## Performance Review
+
+- Identify performance bottlenecks
+- Check for memory leaks
+- Review algorithm efficiency
+- Analyze database queries
+
+## Code Quality
+
+- Check coding standards compliance
+- Review documentation completeness
+- Validate error handling
+- Assess test coverage
+
+## Best Practices
+
+- Framework-specific patterns
+- SOLID principles adherence
+- Code maintainability
+- Architectural consistency
+
+Provide specific, actionable feedback with code examples.
+```
+
+#### Example: Planning Chat Mode
+
+**File**: `.github/chatmodes/planning.chatmode.md`
+
+```markdown
+---
+description: Generate implementation plans without making code changes
+tools: ["codebase", "search", "githubRepo", "usages"]
+model: Claude Sonnet 4
+---
+
+# Planning Mode
+
+You are in planning mode. Generate detailed implementation plans.
+
+## Planning Structure
+
+### Overview
+
+- Brief feature description
+- Goals and objectives
+- Success criteria
+
+### Requirements Analysis
+
+- Functional requirements
+- Non-functional requirements
+- Dependencies and constraints
+
+### Technical Design
+
+- Architecture overview
+- Component breakdown
+- Data flow diagrams
+- API specifications
+
+### Implementation Steps
+
+1. Detailed step-by-step plan
+2. File creation/modification list
+3. Testing strategy
+4. Deployment considerations
+
+### Risk Assessment
+
+- Potential challenges
+- Mitigation strategies
+- Alternative approaches
+
+Do NOT make any code changes - only generate plans.
+```
+
+### Using Chat Modes:
+
+1. **Switch Modes:**
+
+   - Open Chat view (Ctrl/Cmd + Shift + I)
+   - Use the chat mode dropdown
+   - Select your desired mode
+
+2. **Mode-Specific Behavior:**
+   - Each mode follows its configured instructions
+   - Uses specified tools and model
+   - Maintains consistent persona/workflow
+
+### Managing Chat Modes:
+
+1. **Edit Existing Modes:**
+
+   - Configure Chat → Modes
+   - Select mode to modify
+   - Edit `.chatmode.md` file
+
+2. **Share Team Modes:**
+   - Store in `.github/chatmodes/`
+   - Commit to version control
+   - Team members get consistent experience
+
+---
+
+## 6. 🌐 MCP Servers
 
 Model Context Protocol (MCP) servers provide additional context and capabilities.
 
@@ -303,7 +556,7 @@ Model Context Protocol (MCP) servers provide additional context and capabilities
 
 ---
 
-## 6. 🤖 Generate Instructions
+## 7. 🤖 Generate Instructions
 
 Automatically generate custom instructions based on your codebase.
 
@@ -344,9 +597,10 @@ Automatically generate custom instructions based on your codebase.
 
 ### Exercise 2: Create Prompt Files
 
-1. Create a prompt file for code reviews
-2. Create a prompt file for documentation
-3. Use both with sample code
+1. Enable the `chat.promptFiles` setting in VS Code
+2. Create a code review prompt file (`code-review.prompt.md`) in `.github/prompts/`
+3. Create a documentation prompt file (`generate-docs.prompt.md`) with input variables
+4. Test both prompts using `/` command in chat and the editor play button
 
 ### Exercise 3: Configure Tool Sets
 
@@ -360,7 +614,20 @@ Automatically generate custom instructions based on your codebase.
 2. Compare the responses
 3. Identify best mode for different tasks
 
-### Exercise 5: Generate Instructions
+### Exercise 5: Create Custom Chat Modes
+
+1. Create a code review chat mode
+2. Create a planning chat mode
+3. Test both modes with sample tasks
+4. Compare with built-in modes
+
+### Exercise 6: Configure MCP Servers
+
+1. Set up an MCP server (if available)
+2. Test enhanced context capabilities
+3. Compare responses with/without MCP
+
+### Exercise 7: Generate Instructions
 
 1. Use the generate instructions feature
 2. Review and customize the output
@@ -376,6 +643,7 @@ After completing this demo, you should be able to:
 - ✅ Create and use reusable prompt files
 - ✅ Select appropriate tool sets for your projects
 - ✅ Switch between different Copilot modes effectively
+- ✅ Create and manage custom chat modes for specialized workflows
 - ✅ Set up and use MCP servers for additional context
 - ✅ Generate custom instructions automatically
 
@@ -383,7 +651,7 @@ After completing this demo, you should be able to:
 
 ## 🔍 Troubleshooting
 
-### Common Issues:
+### Common Issues
 
 1. **Instructions not being followed:**
 
@@ -393,14 +661,34 @@ After completing this demo, you should be able to:
 
 2. **Prompt files not appearing:**
 
-   - Verify file extension (.md)
-   - Check file location (.vscode/prompts or workspace root)
+   - Verify file extension (`.prompt.md`)
+   - Check `chat.promptFiles` setting is enabled
+   - Ensure file is in correct location (`.github/prompts/` or user profile)
    - Refresh Copilot chat
 
-3. **Tool sets not working:**
+3. **Prompt file variables not working:**
+
+   - Use correct syntax: `${variableName}` not `{{variableName}}`
+   - Check YAML frontmatter format
+   - Verify variable names match available options
+
+4. **Tool sets not working:**
+
    - Ensure tool set is enabled
    - Check VS Code settings
    - Update GitHub Copilot extension
+
+5. **Custom chat modes not appearing:**
+
+   - Verify file extension (`.chatmode.md`)
+   - Check file location (`.github/chatmodes` or user profile)
+   - Ensure proper YAML frontmatter format
+   - Restart VS Code if needed
+
+6. **Chat mode instructions ignored:**
+   - Check YAML frontmatter syntax
+   - Ensure description and tools are properly formatted
+   - Verify model specification is valid
 
 ---
 
