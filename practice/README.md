@@ -45,6 +45,9 @@ For experienced developers ready to explore sophisticated Copilot features.
 - **Iterate**: Refine prompts if first suggestions aren't quite right
 - **Test Everything**: Always review and test generated code
 - **Build Context**: Keep related files open to help Copilot understand your project
+- **Use Enterprise Features**: Set up custom instructions and prompt files for consistency
+- **Organize Tools**: Create tool sets for different development workflows
+- **Explore Chat Modes**: Use specialized modes for code review, planning, and development
 
 ## 📖 Additional Resources
 

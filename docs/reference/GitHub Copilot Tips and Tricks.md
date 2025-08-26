@@ -13,6 +13,19 @@
 | Trigger suggestion  | `Alt + \`     | `Option + \` | Manually trigger suggestions   |
 | Open Copilot Chat   | `Ctrl + I`    | `Cmd + I`    | Open conversational interface  |
 
+### VS Code Advanced Features Access
+
+| Feature               | Command/Access                                        | Description                                     |
+| --------------------- | ----------------------------------------------------- | ----------------------------------------------- |
+| Chat Configuration    | Chat view settings (⚙️) → Configure Chat              | Access prompt files, instructions, tool sets    |
+| Create Prompt File    | Command Palette → `Chat: New Prompt File`             | Create reusable prompt templates                |
+| Create Instructions   | Command Palette → `Chat: New Instructions File`       | Set up custom AI behavior guidelines            |
+| Create Chat Mode      | Command Palette → `Chat: New Mode File`               | Define custom chat modes for specific workflows |
+| Configure Tool Sets   | Command Palette → `Chat: Configure Tool Sets`         | Organize and group tools for easier access      |
+| Toggle Agent Mode     | Command Palette → `GitHub Copilot: Toggle Agent Mode` | Enable autonomous multi-file development        |
+| Generate Instructions | Chat view → Configure Chat → Generate Instructions    | Auto-generate custom instructions from codebase |
+| MCP Server Management | Command Palette → `MCP: Open User Configuration`      | Configure Model Context Protocol servers        |
+
 ### Effective Prompting Patterns
 
 #### 1. The Function Template Pattern
@@ -90,6 +103,110 @@
 4. Disable for very large files
 5. Clear VS Code cache if needed
 
+### Enterprise-Grade Features
+
+#### Custom Instructions (.github/copilot-instructions.md)
+
+Configure project-wide AI behavior:
+
+```markdown
+# Project Copilot Instructions
+
+## Code Style Guidelines
+
+- Use TypeScript for all new files
+- Follow ESLint configuration
+- Include JSDoc comments for all functions
+
+## Security Requirements
+
+- Never hardcode secrets or API keys
+- Use environment variables for configuration
+- Validate all user inputs
+
+## Testing Standards
+
+- Write unit tests for all new functions
+- Use Jest as testing framework
+- Aim for 80%+ code coverage
+```
+
+#### Prompt Files (.prompt.md)
+
+Create reusable prompt templates:
+
+```markdown
+---
+description: Generate comprehensive API documentation
+mode: ask
+tools: ["codebase", "search"]
+---
+
+# API Documentation Generator
+
+Analyze the codebase and generate comprehensive API documentation for ${selection}.
+
+Include:
+
+- Endpoint descriptions
+- Request/response examples
+- Error codes and handling
+- Authentication requirements
+```
+
+#### Tool Sets (Configure Chat → Tool Sets)
+
+Organize tools for different workflows:
+
+```json
+{
+  "webDev": {
+    "tools": ["codebase", "search", "githubRepo", "fetch"],
+    "description": "Web development tools",
+    "icon": "globe"
+  },
+  "testing": {
+    "tools": ["findTestFiles", "problems", "usages"],
+    "description": "Testing and debugging tools",
+    "icon": "beaker"
+  }
+}
+```
+
+#### Custom Chat Modes (.chatmode.md)
+
+Define specialized interaction modes:
+
+```markdown
+---
+description: Comprehensive security review mode
+tools: ["codebase", "search", "usages", "findTestFiles"]
+---
+
+# Security Review Mode
+
+Focus on:
+
+- Security vulnerabilities
+- Hardcoded secrets
+- Input validation
+- Authentication/authorization
+- Performance bottlenecks
+
+Provide specific, actionable feedback with code examples.
+```
+
+#### MCP (Model Context Protocol) Servers
+
+Extend Copilot with external tools and services:
+
+- **Database tools**: Query and manage databases
+- **API integrations**: Connect to external services
+- **File operations**: Advanced file system interactions
+- **Analytics tools**: Data analysis and reporting
+
+Access via: Command Palette → `MCP: Open User Configuration`
+
 ### Advanced Techniques
 
 #### Multi-File Context
@@ -127,6 +244,8 @@ def complex_function(param1, param2):
 
 ### Best Practices Checklist
 
+#### General Development
+
 - [ ] Always review generated code before using
 - [ ] Test AI-generated functions thoroughly
 - [ ] Use version control to track changes
@@ -135,6 +254,17 @@ def complex_function(param1, param2):
 - [ ] Document your prompting strategies
 - [ ] Share effective patterns with team
 - [ ] Keep learning and experimenting
+
+#### Enterprise Features
+
+- [ ] Set up custom instructions for consistent AI behavior
+- [ ] Create prompt files for frequently used workflows
+- [ ] Organize tools into logical tool sets
+- [ ] Use appropriate chat modes for different tasks
+- [ ] Configure MCP servers for enhanced capabilities
+- [ ] Share team configurations via version control
+- [ ] Review and update instructions regularly
+- [ ] Train team members on advanced features
 
 ### Common Pitfalls to Avoid
 

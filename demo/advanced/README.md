@@ -20,15 +20,15 @@ These demos go beyond basic code completion to show Copilot as an **intelligent 
 
 Each demo is now organized in its own folder with everything you need:
 
-| Demo Folder                     | Focus Area                           | Best For                       | Duration  |
-| ------------------------------- | ------------------------------------ | ------------------------------ | --------- |
-| `demo1_agent_mode/`             | Agent Mode & Multi-File Intelligence | Showing autonomous development | 15-20 min |
-| `demo2_security/`               | AI Security Intelligence             | Security-conscious audiences   | 12-15 min |
-| `demo3_context_understanding/`  | Advanced Context & Architecture      | Technical architects           | 15-18 min |
-| `demo4_custom_instructions/`    | Custom Instructions & Team Standards | Enterprise development teams   | 12-15 min |
-| `demo5_code_review/`            | AI-Powered Code Review               | QA and development teams       | 10-12 min |
-| `demo6_extensions_integration/` | DevOps Tool Integration              | DevOps and platform teams      | 15-20 min |
-| `demo7_vscode_features/`        | VS Code Enterprise Features          | Enterprise teams               | 15-20 min |
+| Demo Folder                     | Focus Area                                           | Best For                       | Duration  |
+| ------------------------------- | ---------------------------------------------------- | ------------------------------ | --------- |
+| `demo1_agent_mode/`             | Agent Mode & Multi-File Intelligence                 | Showing autonomous development | 15-20 min |
+| `demo2_security/`               | AI Security Intelligence                             | Security-conscious audiences   | 12-15 min |
+| `demo3_context_understanding/`  | Advanced Context & Architecture                      | Technical architects           | 15-18 min |
+| `demo4_custom_instructions/`    | Custom Instructions & Team Standards                 | Enterprise development teams   | 12-15 min |
+| `demo5_code_review/`            | AI-Powered Code Review                               | QA and development teams       | 10-12 min |
+| `demo6_extensions_integration/` | DevOps Tool Integration                              | DevOps and platform teams      | 15-20 min |
+| `demo7_vscode_features/`        | VS Code Enterprise Features & Advanced Configuration | Enterprise teams               | 15-25 min |
 
 ### Each Demo Folder Contains:
 
@@ -116,9 +116,9 @@ code README.md
 ##### **Demo 5: VS Code Enterprise Features** (10 minutes)
 
 - **File**: `demo7_vscode_features.md`
-- **Key Features**: Custom Instructions, Advanced Chat, Workspace Intelligence, Extensions
-- **Highlight**: Enterprise-grade AI development capabilities
-- **Audience Value**: Team collaboration, security, and governance
+- **Key Features**: Custom Instructions, Prompt Files, Tool Sets, Chat Modes, MCP Servers
+- **Highlight**: Enterprise-grade AI development configuration and team collaboration
+- **Audience Value**: Team standardization, workflow automation, and advanced AI capabilities
 
 #### **Q&A and Wrap-up** (10 minutes)
 

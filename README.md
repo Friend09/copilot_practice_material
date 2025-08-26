@@ -5,8 +5,9 @@ This comprehensive repository contains:
 - **Hands-on exercises** (beginner and advanced tracks)
 - **Hackathon challenges** (guided and minimal formats for different skill levels)
 - **Learning resources** including a 30-day roadmap and troubleshooting guides
+- **VS Code enterprise features** including custom instructions, prompt files, tool sets, and chat modes
 
-All materials help you master **GitHub Copilot**, **Copilot Chat**, and the new **Copilot agent (MCP)** capabilities.
+All materials help you master **GitHub Copilot**, **Copilot Chat**, **VS Code advanced features**, and the new **Copilot agent (MCP)** capabilities.
 Examples are in **Python 3.8+** and designed for **VS Code**.
 
 ---
@@ -44,17 +45,17 @@ Work through `practice/` exercises in order for the best learning experience.
 
 ## 2 Prerequisites
 
-| Tool / Account                       | Purpose                            | Minimum Version       |
-| ------------------------------------ | ---------------------------------- | --------------------- |
-| **GitHub account** with Copilot seat | Enables Copilot suggestions & chat | any paid Copilot plan |
-| **VS Code**                          | Editor & Copilot extensions        | 1.85 or later         |
-| **GitHub Copilot** extension         | Inline code completions            | latest                |
-| **GitHub Copilot Chat** extension    | Chat & agent mode                  | v ≥ 0.10              |
-| **Python**                           | Run examples                       | 3.8+                  |
-| **uv** (optional)                    | Fast `pip` alternative             | 0.1.30+               |
-| **make** (optional)                  | Convenience tasks                  | any                   |
+| Tool / Account                       | Purpose                                | Minimum Version       |
+| ------------------------------------ | -------------------------------------- | --------------------- |
+| **GitHub account** with Copilot seat | Enables Copilot suggestions & chat     | any paid Copilot plan |
+| **VS Code**                          | Editor & Copilot extensions            | 1.85 or later         |
+| **GitHub Copilot** extension         | Inline code completions                | latest                |
+| **GitHub Copilot Chat** extension    | Chat, agent mode & enterprise features | v ≥ 0.10              |
+| **Python**                           | Run examples                           | 3.8+                  |
+| **uv** (optional)                    | Fast `pip` alternative                 | 0.1.30+               |
+| **make** (optional)                  | Convenience tasks                      | any                   |
 
-> **Note** – The advanced MCP exercise also requires enabling the **"GitHub MCP Agent"** feature flag in your organization or on your GitHub account.
+> **Note** – Advanced features like MCP servers, custom instructions, and prompt files require VS Code 1.95+ and may need enterprise or beta access.
 
 ---
 

@@ -34,6 +34,46 @@ Before starting, ensure you have:
 - Access to VS Code settings and workspace configuration
 - Basic understanding of VS Code and GitHub Copilot
 
+### Setup Instructions
+
+1. **Create a new practice folder:**
+
+   ```bash
+   mkdir copilot-advanced-features-demo
+   cd copilot-advanced-features-demo
+   ```
+
+2. **Create a VS Code workspace file (optional but recommended):**
+
+   Create a file named `copilot-demo.code-workspace` with the following content:
+
+   ```json
+   {
+     "folders": [
+       {
+         "path": "."
+       }
+     ],
+     "settings": {}
+   }
+   ```
+
+3. **Initialize a Git repository:**
+
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit for Copilot advanced features demo"
+   ```
+
+4. **Open in VS Code:**
+
+   ```bash
+   code copilot-demo.code-workspace
+   ```
+
+Now you're all set to get started with the advanced GitHub Copilot features!
+
 ---
 
 ## 🚀 Getting Started

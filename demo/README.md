@@ -16,7 +16,7 @@ demo/
     ├── demo4_custom_instructions.md   ✅ Function Calling & Custom Instructions
     ├── demo5_code_review.md           ✅ Code Review & PR Summary Assistance
     ├── demo6_extensions_integration.md ✅ Extensions & Tool Integration
-    └── demo7_vscode_features.md       ✅ VS Code Enterprise Features
+    └── demo7_vscode_features.md       ✅ VS Code Enterprise Features & Configuration
 ```
 
 ## 🎯 How to Use These Files
@@ -45,7 +45,7 @@ demo/
 | Custom Instructions    | 10-15 min | Intermediate | Enterprise teams             |
 | Code Review            | 8-12 min  | Beginner     | All developers               |
 | Extensions Integration | 15-20 min | Advanced     | DevOps teams                 |
-| VS Code Features       | 15-20 min | Intermediate | Enterprise users             |
+| VS Code Features       | 15-25 min | Intermediate | Enterprise users & teams     |
 
 ## 🛠️ Prerequisites
 

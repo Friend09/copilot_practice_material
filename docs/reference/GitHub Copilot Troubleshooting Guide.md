@@ -157,7 +157,65 @@
 - Use a personal GitHub account for learning (if allowed)
 - Check organization settings on GitHub
 
-### 7. Advanced Troubleshooting
+### 7. Enterprise Features Issues
+
+#### Problem: Custom instructions not working
+
+**Symptoms**: AI doesn't follow instructions in `.github/copilot-instructions.md`
+**Solutions**:
+
+- Verify the `github.copilot.chat.codeGeneration.useInstructionFiles` setting is enabled
+- Check file location: `.github/copilot-instructions.md` or `.github/instructions/`
+- Ensure the file has proper Markdown format
+- Test with simple, clear instructions first
+- Verify file permissions and VS Code can read the file
+
+#### Problem: Prompt files not appearing
+
+**Symptoms**: Prompt files don't show up in chat
+**Solutions**:
+
+- Enable the `chat.promptFiles` setting in VS Code
+- Check file extension is `.prompt.md`
+- Verify file location: `.github/prompts/` or configured location
+- Test YAML frontmatter syntax is valid
+- Use Command Palette: `Chat: Refresh Prompt Files`
+
+#### Problem: Tool sets not available
+
+**Symptoms**: Custom tool sets don't appear in agent mode
+**Solutions**:
+
+- Verify tool set file has `.json` or `.jsonc` extension
+- Check JSON syntax is valid
+- Ensure tools referenced in set actually exist
+- Refresh chat view or restart VS Code
+- Check tool set storage location configuration
+
+#### Problem: Chat modes not working
+
+**Symptoms**: Custom chat modes don't appear or function correctly
+**Solutions**:
+
+- Verify file extension is `.chatmode.md`
+- Check YAML frontmatter syntax
+- Ensure referenced tools and instructions exist
+- Test with built-in modes first
+- Use Command Palette: `Chat: Refresh Chat Modes`
+
+#### Problem: MCP servers not connecting
+
+**Symptoms**: MCP tools unavailable or connection errors
+**Solutions**:
+
+- Check `mcp.json` configuration syntax
+- Verify server executable exists and has permissions
+- Test server standalone outside VS Code
+- Check VS Code logs for MCP-specific errors
+- Ensure `chat.mcp.enabled` setting is true
+- Only use trusted MCP servers (security risk)
+
+### 8. Advanced Troubleshooting
 
 #### Collecting Diagnostic Information
 
@@ -218,6 +276,8 @@ When reporting issues, include:
 - Regularly clear cache and temporary files
 - Monitor system resources
 - Review and update `.copilotignore` files
+- Validate custom instructions and prompt files regularly
+- Back up enterprise feature configurations
 
 #### Best Practices
 
@@ -225,5 +285,18 @@ When reporting issues, include:
 - Test Copilot suggestions thoroughly
 - Maintain good coding practices
 - Keep learning about new Copilot features
+- Document team standards in custom instructions
+- Share prompt files and tool sets across team
+- Review and update chat modes based on workflow changes
+- Test MCP servers in isolated environments first
+
+#### Enterprise Configuration Management
+
+- Store `.github/copilot-instructions.md` in version control
+- Organize prompt files in `.github/prompts/` directory
+- Document tool set configurations for team consistency
+- Create standardized chat modes for common workflows
+- Maintain MCP server configurations centrally
+- Regular training on new enterprise features
 
 Remember: Most Copilot issues are related to configuration, network connectivity, or prompt quality. Start with the basics before moving to advanced troubleshooting steps.

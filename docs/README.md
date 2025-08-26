@@ -44,6 +44,12 @@ Detailed session notes and workshop materials:
 2. Follow "30-Day Learning Roadmap" for skill progression
 3. Study "Best Practices" for code quality improvement
 4. Explore "Hackathon Session" for rapid development approaches
+5. Check `../demo/advanced/demo7_vscode_features/` for enterprise features:
+   - **Custom Instructions** for project-wide AI behavior
+   - **Prompt Files** for reusable workflow templates
+   - **Tool Sets** for organized development workflows
+   - **Chat Modes** for specialized interaction patterns
+   - **MCP Servers** for external tool integrations
 
 ### For Instructors
 
