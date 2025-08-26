@@ -79,10 +79,12 @@ Reference other files with [link](../path/to/file.md)
 
 ### Available Variables
 
-- **Workspace variables**: `${workspaceFolder}`, `${workspaceFolderBasename}`
-- **Selection variables**: `${selection}`, `${selectedText}`
-- **File context variables**: `${file}`, `${fileBasename}`, `${fileDirname}`, `${fileBasenameNoExtension}`
-- **Input variables**: `${input:variableName}`, `${input:variableName:placeholder}`
+| Category         | Variables                                                                    | Description                                                    |
+| ---------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Workspace**    | `${workspaceFolder}`, `${workspaceFolderBasename}`                           | Current workspace folder path and name                         |
+| **Selection**    | `${selection}`, `${selectedText}`                                            | Currently selected text in editor                              |
+| **File Context** | `${file}`, `${fileBasename}`, `${fileDirname}`, `${fileBasenameNoExtension}` | Current file path, name, directory, and name without extension |
+| **Input**        | `${input:variableName}`, `${input:variableName:placeholder}`                 | Custom input variables with optional placeholder text          |
 
 ### How to Create Prompt Files
 
@@ -410,11 +412,11 @@ Tool Sets allow you to:
 
 ### Types of Tools Available
 
-Tool sets can include:
-
-- **Built-in tools**: `changes`, `codebase`, `fetch`, `findTestFiles`, `githubRepo`, `problems`, `search`, `usages`
-- **MCP tools**: From Model Context Protocol servers
-- **Extension tools**: Tools contributed by VS Code extensions
+| Tool Type           | Examples                                                                                      | Source                         |
+| ------------------- | --------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Built-in Tools**  | `changes`, `codebase`, `fetch`, `findTestFiles`, `githubRepo`, `problems`, `search`, `usages` | VS Code Copilot                |
+| **MCP Tools**       | Database operations, API integrations, web scraping, analytics                                | Model Context Protocol servers |
+| **Extension Tools** | Language-specific tools, testing frameworks, deployment tools                                 | VS Code extensions             |
 
 ### Creating Tool Sets
 
@@ -498,23 +500,11 @@ Modes change how Copilot interacts with you and processes your requests.
 
 ### Available Modes
 
-#### A. **Assistant Mode** (Default)
-
-- General programming assistance
-- Code completion and generation
-- Explanations and debugging
-
-#### B. **Agent Mode**
-
-- Autonomous task execution
-- Multi-step problem solving
-- Proactive suggestions
-
-#### C. **Review Mode**
-
-- Code review focus
-- Security and quality analysis
-- Best practices enforcement
+| Mode                         | Focus                                                                        | Best For                                               |
+| ---------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------ |
+| **Assistant Mode** (Default) | General programming assistance, code completion, explanations, debugging     | General development questions and code assistance      |
+| **Agent Mode**               | Autonomous task execution, multi-step problem solving, proactive suggestions | Complex tasks requiring exploration and multiple tools |
+| **Review Mode**              | Code review focus, security and quality analysis, best practices enforcement | Code quality assessment and security reviews           |
 
 ### Switching Modes
 
@@ -877,12 +867,14 @@ MCP servers can provide preconfigured prompts for common tasks:
 
 #### Server Actions
 
-Right-click on server in Extensions view or use `MCP: List Servers` for actions:
+| Action                 | Method                              | Purpose                        |
+| ---------------------- | ----------------------------------- | ------------------------------ |
+| **Start/Stop/Restart** | Right-click server → Control state  | Control server state           |
+| **Show Output**        | Right-click server → Show Output    | View server logs for debugging |
+| **Uninstall**          | Right-click server → Uninstall      | Remove server configuration    |
+| **Trust/Untrust**      | Right-click server → Trust settings | Manage server trust settings   |
 
-- **Start/Stop/Restart**: Control server state
-- **Show Output**: View server logs for debugging
-- **Uninstall**: Remove server configuration
-- **Trust/Untrust**: Manage server trust settings
+Access these actions by right-clicking on server in Extensions view or using `MCP: List Servers`.
 
 #### Auto-start Configuration
 
@@ -898,55 +890,43 @@ Enable automatic server restart on configuration changes:
 
 The [VS Code MCP catalog](https://code.visualstudio.com/mcp) provides a curated list of MCP servers organized by category. Here are some of the most useful servers available:
 
-#### Developer Tools
-
-- **[GitHub](https://github.com/github/github-mcp-server)**: Access GitHub repositories, issues, and pull requests through secure API integration
-- **[Figma](https://help.figma.com/hc/en-us/articles/32132100833559-Guide-to-the-Dev-Mode-MCP-Server)**: Extract UI content and generate code from Figma designs (requires latest desktop app)
-- **[Playwright](https://github.com/microsoft/playwright-mcp)**: Automate web browsers using accessibility trees for testing and data extraction
-- **[Sentry](https://github.com/getsentry/sentry-mcp)**: Retrieve and analyze application errors and performance issues from Sentry projects
-- **[Hugging Face](https://hf.co/mcp)**: Access models, datasets, and Spaces on the Hugging Face Hub
-- **[MarkItDown](https://github.com/microsoft/markitdown/tree/main/packages/markitdown-mcp)**: Convert various file formats (PDF, Word, Excel, images, audio) to Markdown
-- **[Microsoft Docs](https://github.com/microsoftdocs/mcp)**: Search and retrieve content from Microsoft Learn, Azure documentation, and official Microsoft technical resources
-- **[Context7](https://github.com/upstash/context7)**: Get up-to-date, version-specific documentation and code examples from any library or framework
-- **[Codacy](https://github.com/codacy/codacy-mcp-server)**: Comprehensive code quality and security analysis with SAST, secrets detection, and dependency scanning
-
-#### Productivity & Project Management
-
-- **[Notion](https://github.com/makenotion/notion-mcp-server)**: View, search, create, and update Notion pages and databases
-- **[Linear](https://linear.app/docs/mcp)**: Create, update, and track issues in Linear's project management platform
-- **[Asana](https://developers.asana.com/docs/using-asanas-model-control-protocol-mcp-server)**: Create and manage tasks, projects, and comments through the Asana API
-- **[Atlassian](https://www.atlassian.com/platform/remote-mcp-server)**: Connect to Jira and Confluence for issue tracking and documentation
-- **[Zapier](https://zapier.com/mcp)**: Create workflows and execute tasks across 30,000+ connected apps
-- **[Monday.com](https://github.com/mondaycom/monday-ai/tree/master/packages/monday-api-mcp)**: Project management integration with Monday.com for managing boards, items, and teams
-- **[Sequential Thinking](https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking)**: Break down complex tasks into manageable steps with transparent tracking
-- **[Memory](https://github.com/modelcontextprotocol/servers/tree/main/src/memory)**: Store and retrieve contextual information across sessions
-
-#### Data & Analytics
-
-- **[DuckDB](https://github.com/ktanaka101/mcp-server-duckdb)**: Query and analyze data in DuckDB databases locally and in the cloud
-- **[MongoDB](https://github.com/mongodb-js/mongodb-mcp-server)**: Database operations and management with document operations and aggregation pipelines
-- **[Neon](https://github.com/neondatabase-labs/mcp-server-neon)**: Manage and query Neon Postgres databases with natural language
-- **[PostHog](https://github.com/PostHog/mcp)**: Access PostHog analytics to create annotations and retrieve product usage insights
-- **[Microsoft Clarity](https://github.com/microsoft/clarity-mcp-server)**: Access Microsoft Clarity analytics data including heatmaps and session recordings
-- **[Apify](https://docs.apify.com/platform/integrations/mcp)**: Extract data from websites and automate workflows through Apify's Actor ecosystem
-- **[Firecrawl](https://github.com/mendableai/firecrawl-mcp-server)**: Advanced web scraping, crawling, search, and structured data extraction
-- **[Prisma Postgres](https://mcp.prisma.io/mcp)**: Database operations with Prisma ORM and PostgreSQL for schema management and migrations
-
-#### Business Services
-
-- **[Stripe](https://docs.stripe.com/mcp)**: Create customers, manage subscriptions, and generate payment links through Stripe APIs
-- **[PayPal](https://developer.paypal.com/tools/mcp-server/)**: Create invoices, process payments, and access transaction data through PayPal services
-- **[Square](https://developer.squareup.com/docs/mcp)**: Process payments and manage customers through Square's API ecosystem
-- **[Intercom](https://developers.intercom.com/docs/guides/mcp)**: Access customer conversations and support tickets for data analysis
-- **[Wix](https://www.wix.com/studio/developers/mcp-server)**: Build and manage Wix sites with eCommerce, bookings, and payment features
-- **[Webflow](https://github.com/webflow/mcp-server)**: Create and manage websites, collections, and content through Webflow's APIs
-
-#### Cloud & Infrastructure
-
-- **[Azure](https://github.com/azure/azure-mcp)**: Manage Azure resources, query databases, and access Azure services
-- **[Azure DevOps](https://github.com/microsoft/azure-devops-mcp)**: Manage Azure DevOps projects, work items, repositories, builds, releases, and test plans
-- **[Convex](https://stack.convex.dev/convex-mcp-server)**: Access Convex backend databases and functions for real-time data operations
-- **[Terraform](https://terraform-mcp-server.com)**: Infrastructure as Code management with plan, apply, destroy operations, and state management
+| Category                   | Server                                                                                                  | Description                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Developer Tools**        | [GitHub](https://github.com/github/github-mcp-server)                                                   | Access GitHub repositories, issues, and pull requests          |
+|                            | [Figma](https://help.figma.com/hc/en-us/articles/32132100833559-Guide-to-the-Dev-Mode-MCP-Server)       | Extract UI content and generate code from Figma designs        |
+|                            | [Playwright](https://github.com/microsoft/playwright-mcp)                                               | Automate web browsers using accessibility trees                |
+|                            | [Sentry](https://github.com/getsentry/sentry-mcp)                                                       | Retrieve and analyze application errors and performance issues |
+|                            | [Hugging Face](https://hf.co/mcp)                                                                       | Access models, datasets, and Spaces on the Hugging Face Hub    |
+|                            | [MarkItDown](https://github.com/microsoft/markitdown/tree/main/packages/markitdown-mcp)                 | Convert various file formats to Markdown                       |
+|                            | [Microsoft Docs](https://github.com/microsoftdocs/mcp)                                                  | Search Microsoft Learn and Azure documentation                 |
+|                            | [Context7](https://github.com/upstash/context7)                                                         | Get up-to-date documentation and code examples                 |
+|                            | [Codacy](https://github.com/codacy/codacy-mcp-server)                                                   | Code quality and security analysis with SAST                   |
+| **Productivity**           | [Notion](https://github.com/makenotion/notion-mcp-server)                                               | View, search, create, and update Notion pages                  |
+|                            | [Linear](https://linear.app/docs/mcp)                                                                   | Create, update, and track issues in Linear                     |
+|                            | [Asana](https://developers.asana.com/docs/using-asanas-model-control-protocol-mcp-server)               | Manage tasks, projects, and comments                           |
+|                            | [Atlassian](https://www.atlassian.com/platform/remote-mcp-server)                                       | Connect to Jira and Confluence                                 |
+|                            | [Zapier](https://zapier.com/mcp)                                                                        | Create workflows across 30,000+ apps                           |
+|                            | [Monday.com](https://github.com/mondaycom/monday-ai/tree/master/packages/monday-api-mcp)                | Project management with boards and teams                       |
+|                            | [Sequential Thinking](https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking) | Break down complex tasks into steps                            |
+|                            | [Memory](https://github.com/modelcontextprotocol/servers/tree/main/src/memory)                          | Store contextual information across sessions                   |
+| **Data & Analytics**       | [DuckDB](https://github.com/ktanaka101/mcp-server-duckdb)                                               | Query and analyze DuckDB databases                             |
+|                            | [MongoDB](https://github.com/mongodb-js/mongodb-mcp-server)                                             | Database operations and aggregation pipelines                  |
+|                            | [Neon](https://github.com/neondatabase-labs/mcp-server-neon)                                            | Manage Neon Postgres databases with natural language           |
+|                            | [PostHog](https://github.com/PostHog/mcp)                                                               | Access analytics and product usage insights                    |
+|                            | [Microsoft Clarity](https://github.com/microsoft/clarity-mcp-server)                                    | Access analytics data and session recordings                   |
+|                            | [Apify](https://docs.apify.com/platform/integrations/mcp)                                               | Extract data and automate workflows                            |
+|                            | [Firecrawl](https://github.com/mendableai/firecrawl-mcp-server)                                         | Advanced web scraping and data extraction                      |
+|                            | [Prisma Postgres](https://mcp.prisma.io/mcp)                                                            | Database operations with Prisma ORM                            |
+| **Business Services**      | [Stripe](https://docs.stripe.com/mcp)                                                                   | Create customers, manage subscriptions                         |
+|                            | [PayPal](https://developer.paypal.com/tools/mcp-server/)                                                | Create invoices and process payments                           |
+|                            | [Square](https://developer.squareup.com/docs/mcp)                                                       | Process payments and manage customers                          |
+|                            | [Intercom](https://developers.intercom.com/docs/guides/mcp)                                             | Access customer conversations and support tickets              |
+|                            | [Wix](https://www.wix.com/studio/developers/mcp-server)                                                 | Build and manage Wix sites                                     |
+|                            | [Webflow](https://github.com/webflow/mcp-server)                                                        | Create and manage websites and content                         |
+| **Cloud & Infrastructure** | [Azure](https://github.com/azure/azure-mcp)                                                             | Manage Azure resources and services                            |
+|                            | [Azure DevOps](https://github.com/microsoft/azure-devops-mcp)                                           | Manage projects, work items, and repositories                  |
+|                            | [Convex](https://stack.convex.dev/convex-mcp-server)                                                    | Access backend databases and functions                         |
+|                            | [Terraform](https://terraform-mcp-server.com)                                                           | Infrastructure as Code management                              |
 
 #### Installation Examples
 
@@ -978,17 +958,17 @@ Visit the [VS Code MCP catalog](https://code.visualstudio.com/mcp) for the most 
 
 #### Server Configuration Properties
 
-**Standard I/O (stdio) servers:**
+| Server Type              | Required Properties         | Optional Properties      |
+| ------------------------ | --------------------------- | ------------------------ |
+| **Standard I/O (stdio)** | `type: "stdio"`, `command`  | `args`, `env`, `envFile` |
+| **HTTP/SSE**             | `type: "http"/"sse"`, `url` | `headers`                |
 
-- `type`: "stdio"
+**Property Details:**
+
 - `command`: Executable command (must be in PATH or full path)
 - `args`: Array of command arguments
 - `env`: Environment variables object
 - `envFile`: Path to environment file
-
-**HTTP/SSE servers:**
-
-- `type`: "http" or "sse"
 - `url`: Server URL
 - `headers`: HTTP headers object
 
@@ -1013,10 +993,11 @@ Reference in server config: `"${input:api-key}"`
 
 #### Server Naming Conventions
 
-- Use camelCase: `githubIntegration`, `databaseHelper`
-- Avoid whitespace and special characters
-- Use descriptive, unique names
-- Reflect functionality or brand
+| Convention  | Examples                              | Avoid                                   |
+| ----------- | ------------------------------------- | --------------------------------------- |
+| **Format**  | `githubIntegration`, `databaseHelper` | `github integration`, `database-helper` |
+| **Style**   | camelCase, descriptive, unique names  | whitespace, special characters          |
+| **Purpose** | Reflect functionality or brand        | Generic names like `server1`            |
 
 ### Synchronization Across Devices
 
@@ -1053,28 +1034,18 @@ Supports debugging for Node.js and Python servers.
 
 #### MCP Troubleshooting Issues
 
-1. **Server not starting:**
+| Issue                          | Symptoms                                  | Primary Solution                                                      |
+| ------------------------------ | ----------------------------------------- | --------------------------------------------------------------------- |
+| **Server not starting**        | Server fails to launch                    | Check server logs: `MCP: List Servers` > Show Output                  |
+| **Docker servers not working** | Container-based servers fail              | Don't use detached mode (`-d` option) - server must run in foreground |
+| **Tools not appearing**        | MCP tools missing from agent mode         | Restart server: Right-click server > Restart                          |
+| **128 tools limit error**      | "Cannot have more than 128 tools" message | Deselect unnecessary tools in tools picker                            |
 
-   - Check server logs: `MCP: List Servers` > Show Output
-   - Verify command/path is correct
-   - Check environment variables and permissions
+**Additional troubleshooting steps:**
 
-2. **Docker servers not working:**
-
-   - Don't use detached mode (`-d` option)
-   - Server must run in foreground
-   - Verify container configuration
-
-3. **Tools not appearing:**
-
-   - Restart server: Right-click server > Restart
-   - Clear cached tools: `MCP: Reset Cached Tools`
-   - Check server trust: `MCP: Reset Trust`
-
-4. **128 tools limit error:**
-   - Deselect unnecessary tools in tools picker
-   - Enable virtual tools: `github.copilot.chat.virtualTools.threshold`
-   - Use tool sets to organize tools efficiently
+- **Server issues**: Verify command/path is correct, check environment variables and permissions
+- **Tool visibility**: Clear cached tools (`MCP: Reset Cached Tools`), check server trust (`MCP: Reset Trust`)
+- **Tool limits**: Enable virtual tools (`github.copilot.chat.virtualTools.threshold`), use tool sets for organization
 
 ---
 
@@ -1273,112 +1244,40 @@ After completing this demo, you should be able to:
 
 ## 🔍 Troubleshooting
 
-### Common Issues
+### Common Issues Summary
 
-1. **Instructions not being followed:**
+| Issue Category   | Problem            | Quick Fix                                                               |
+| ---------------- | ------------------ | ----------------------------------------------------------------------- |
+| **Instructions** | Not being followed | Enable `github.copilot.chat.codeGeneration.useInstructionFiles` setting |
+| **Prompt Files** | Not appearing      | Check file extension (`.prompt.md`) and location                        |
+| **Tool Sets**    | Not working        | Ensure `.jsonc` extension and enable agent mode                         |
+| **Chat Modes**   | Not appearing      | Verify `.chatmode.md` extension and YAML frontmatter                    |
+| **MCP Servers**  | Not starting       | Check server logs and command/path                                      |
 
-   - Ensure `github.copilot.chat.codeGeneration.useInstructionFiles` setting is enabled
-   - Check file location and syntax for `.github/copilot-instructions.md`
-   - For `.instructions.md` files, verify YAML frontmatter format and `applyTo` patterns
-   - Ensure instructions are clear and specific
-   - Restart VS Code to reload instructions
+### Detailed Troubleshooting
 
-2. **Instruction files not being detected:**
+#### Instructions Issues
 
-   - Verify file extensions (`.instructions.md` for specific instructions)
-   - Check file locations (`.github/instructions/` for workspace, or user profile)
-   - Ensure proper YAML frontmatter syntax in `.instructions.md` files
-   - Confirm `applyTo` glob patterns match your target files
+| Problem                       | Primary Solution                            | Additional Steps                                   |
+| ----------------------------- | ------------------------------------------- | -------------------------------------------------- |
+| **Instructions not followed** | Enable `useInstructionFiles` setting        | Check file location, syntax, restart VS Code       |
+| **Files not detected**        | Verify file extensions (`.instructions.md`) | Check YAML frontmatter, confirm `applyTo` patterns |
 
-3. **Prompt files not appearing:**
+#### Prompt & Chat Mode Issues
 
-   - Verify file extension (`.prompt.md`)
-   - Check `chat.promptFiles` setting is enabled
-   - Ensure file is in correct location (`.github/prompts/` or user profile)
-   - Refresh Copilot chat
+| Problem                   | Primary Solution                             | Additional Steps                                   |
+| ------------------------- | -------------------------------------------- | -------------------------------------------------- |
+| **Prompt files missing**  | Check `.prompt.md` extension                 | Enable `chat.promptFiles` setting, verify location |
+| **Variables not working** | Use correct syntax: `${name}` not `{{name}}` | Check YAML frontmatter format                      |
+| **Chat modes missing**    | Verify `.chatmode.md` extension              | Check YAML frontmatter syntax, restart VS Code     |
 
-4. **Prompt file variables not working:**
+#### Tool & MCP Issues
 
-   - Use correct syntax: `${variableName}` not `{{variableName}}`
-   - Check YAML frontmatter format
-   - Verify variable names match available options
-
-5. **Tool sets not working:**
-
-   - Ensure tool set file has correct `.jsonc` extension
-   - Check JSON syntax in tool set configuration
-   - Verify tool names exist in available tools list
-   - Enable agent mode to access tool sets functionality
-   - Restart VS Code if tool sets don't appear
-
-6. **"Cannot have more than 128 tools per request" error:**
-
-   - Reduce the number of selected tools/tool sets in agent mode
-   - Use Tools icon in Chat view to deselect unused tools
-   - Enable virtual tools setting: `github.copilot.chat.virtualTools.threshold`
-   - Consider creating smaller, more focused tool sets
-
-7. **Custom chat modes not appearing:**
-
-   - Verify file extension (`.chatmode.md`)
-   - Check file location (`.github/chatmodes/` for workspace, or user profile)
-   - Ensure proper YAML frontmatter format
-   - Confirm VS Code version 1.101 or later (custom chat modes are in preview)
-   - Restart VS Code if needed
-
-8. **Chat mode instructions ignored:**
-
-   - Check YAML frontmatter syntax for errors
-   - Ensure description and tools are properly formatted arrays/strings
-   - Verify model specification is valid (e.g., "Claude Sonnet 4", "GPT-4o")
-   - Test with a simple chat mode first to verify functionality
-
-9. **Chat mode dropdown not showing custom modes:**
-
-   - Ensure the `.chatmode.md` file is saved and VS Code has reloaded
-   - Check that the `description` field is present in YAML frontmatter
-   - Verify file is in correct location: `.github/chatmodes/` or user profile
-   - Use the `chat.modeFilesLocations` setting to add additional folders if needed
-
-10. **Glob patterns not working in instructions:**
-
-    - Test glob patterns: `**/*.py` for all Python files, `src/**/*.ts` for TypeScript in src
-    - Use commas to separate multiple patterns: `**/*.ts,**/*.tsx`
-    - Ensure forward slashes in paths even on Windows
-
-11. **MCP servers not starting:**
-
-    - Check server logs: `MCP: List Servers` > Show Output
-    - Verify command/path is correct and executable exists
-    - Review environment variables and file permissions
-    - Ensure VS Code version 1.102+ for full MCP support
-
-12. **MCP tools not appearing in agent mode:**
-
-    - Restart MCP server: Right-click server > Restart
-    - Clear cached tools: `MCP: Reset Cached Tools`
-    - Verify server trust: `MCP: Reset Trust`
-    - Check that `chat.mcp.enabled` setting is true
-
-13. **MCP server configuration errors:**
-
-    - Validate JSON syntax in `mcp.json` file
-    - Use `MCP: Open User Configuration` or `MCP: Open Workspace Folder Configuration`
-    - Check input variable references: `${input:variable-id}`
-    - Review server naming conventions (use camelCase, avoid spaces)
-
-14. **Docker MCP servers not working:**
-
-    - Don't use detached mode (`-d` option) - server must run in foreground
-    - Verify container has proper stdio communication setup
-    - Check Docker container logs for startup errors
-
-15. **MCP tool confirmations and security:**
-
-    - Always review tool parameters before confirming execution
-    - Use "Continue" dropdown options to auto-approve trusted tools
-    - Only install MCP servers from trusted sources
-    - Reset trust settings if needed: `MCP: Reset Trust`
+| Problem                   | Primary Solution         | Additional Steps                                    |
+| ------------------------- | ------------------------ | --------------------------------------------------- |
+| **Tool sets not working** | Check `.jsonc` extension | Enable agent mode, verify JSON syntax               |
+| **128 tools limit**       | Deselect unused tools    | Enable virtual tools setting, use smaller tool sets |
+| **MCP servers failing**   | Check server logs        | Verify configuration, reset cached tools            |
 
 ---
 
