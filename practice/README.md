@@ -28,7 +28,12 @@ For experienced developers ready to explore sophisticated Copilot features.
 - `02_advanced_prompts/` - Multi-line prompts and feature generation
 - `03_project_context/` - Leveraging custom APIs and project context
 - `04_refactor_debug/` - Advanced refactoring and debugging
-- `05_mcp_agent/` - Model Context Protocol (MCP) agent mode
+- `05_mcp_agent/` - Agent Mode, Copilot Coding Agent, and MCP
+- `06_copilot_edits/` - Multi-file editing with natural language (NEW 2024)
+- `07_multi_model_support/` - Choosing and optimizing AI models (NEW 2024)
+- `08_copilot_extensions/` - Building Skillsets and custom Agents (NEW 2024)
+- `09_prompt_files/` - Reusable prompt templates and blueprints (NEW 2024)
+- `10_vision_copilot/` - Image-to-code generation (NEW 2024)
 
 **Daily Exercises:** The `exercises/` folder contains advanced practice files (day15-day30) for complex scenarios.
 
@@ -45,9 +50,21 @@ For experienced developers ready to explore sophisticated Copilot features.
 - **Iterate**: Refine prompts if first suggestions aren't quite right
 - **Test Everything**: Always review and test generated code
 - **Build Context**: Keep related files open to help Copilot understand your project
-- **Use Enterprise Features**: Set up custom instructions and prompt files for consistency
-- **Organize Tools**: Create tool sets for different development workflows
-- **Explore Chat Modes**: Use specialized modes for code review, planning, and development
+- **Try Different Modes**: Use inline suggestions for quick edits, Chat for questions, and Edits for multi-file changes
+- **Experiment with Models**: Different AI models excel at different tasks - try them all
+- **Leverage Agent Mode**: For complex tasks, let Copilot work autonomously and iterate
+
+## 🆕 What's New in 2024/2025
+
+GitHub Copilot has evolved significantly with powerful new capabilities:
+
+- **🤖 Agent Mode**: Copilot can work autonomously, iterate on solutions, and fix its own errors
+- **📝 Copilot Edits**: Edit multiple files simultaneously with natural language instructions
+- **🎯 Multi-Model Support**: Choose from GPT, Claude, and Gemini models for optimal results
+- **🔌 Extensions**: Build custom Skillsets and Agents to extend Copilot's capabilities
+- **📋 Prompt Files**: Save and share reusable prompt templates across your team
+- **🎨 Vision for Copilot**: Convert mockups and screenshots directly into working code
+- **🚀 Coding Agent**: Assign entire GitHub issues to Copilot for autonomous completion
 
 ## 📖 Additional Resources
 

@@ -1,10 +1,10 @@
 # 01 - Introduction to GitHub Copilot
 
-GitHub Copilot is an AI pair programmer that helps you write code faster and with less effort. Powered by OpenAI Codex, it suggests completions for code, entire functions, and even whole files in real-time within your editor. This introduction will cover what Copilot is, how it works, and why it's a revolutionary tool for developers.
+GitHub Copilot is an AI pair programmer that helps you write code faster and with less effort. Powered by advanced AI models, it suggests completions for code, entire functions, and even whole files in real-time within your editor. This introduction will cover what Copilot is, how it works, and why it's a revolutionary tool for developers.
 
 ## What is GitHub Copilot?
 
-GitHub Copilot is an artificial intelligence tool developed by GitHub and OpenAI to assist users of integrated development environments (IDEs) by autocompleting code. It was first announced by GitHub on June 29, 2021, and is available as an extension for various IDEs, including Visual Studio Code, Neovim, and JetBrains IDEs [1].
+GitHub Copilot is an artificial intelligence tool developed by GitHub and OpenAI to assist users of integrated development environments (IDEs) by autocompleting code. It was first announced by GitHub on June 29, 2021, and is available as an extension for various IDEs, including Visual Studio Code, Neovim, JetBrains IDEs, Xcode, and Visual Studio [1].
 
 Copilot analyzes the context in your file and suggests lines of code or entire functions. It draws context from comments, function names, and the code around it. This means it can help you with:
 
@@ -12,10 +12,23 @@ Copilot analyzes the context in your file and suggests lines of code or entire f
 - **Generating functions from comments**: Describe what you want in natural language, and Copilot will try to generate the code.
 - **Suggesting test cases**: Helps in writing unit tests quickly.
 - **Refactoring code**: Offers suggestions to improve existing code.
+- **Multi-file editing**: Edit multiple files simultaneously with natural language instructions.
+- **Autonomous task completion**: Assign entire tasks to Copilot to complete independently.
+- **Image-to-code generation**: Convert UI mockups and screenshots into working code.
 
 ## How Does GitHub Copilot Work?
 
-GitHub Copilot is powered by OpenAI Codex, a new AI system trained on a massive dataset of publicly available source code and natural language. When you type code or comments, Copilot sends this context to the OpenAI Codex model, which then predicts and suggests the most relevant code snippets. This process happens almost instantaneously, providing suggestions as you type [2].
+GitHub Copilot is powered by advanced AI models including OpenAI's GPT models, Anthropic's Claude, and Google's Gemini. It's trained on a massive dataset of publicly available source code and natural language. When you type code or comments, Copilot sends this context to the AI model, which then predicts and suggests the most relevant code snippets. This process happens almost instantaneously, providing suggestions as you type [2].
+
+### 2024/2025 Evolution: Multi-Model Support
+
+As of 2024, GitHub Copilot now supports multiple AI models through a model picker, allowing you to choose the best model for your specific task:
+
+- **GPT-4 and newer models**: Excellent for complex reasoning and general-purpose coding
+- **Claude (Anthropic)**: Strong at longer contexts and nuanced understanding
+- **Gemini (Google)**: Fast and efficient for quick iterations
+
+This flexibility ensures you can optimize for speed, accuracy, or cost depending on your needs.
 
 ### The Role of Context
 
@@ -39,16 +52,47 @@ GitHub Copilot offers several compelling benefits for developers:
 -   **Learning and Exploration**: Copilot can expose you to new APIs, libraries, and coding patterns, acting as a learning tool.
 -   **Error Reduction**: By suggesting correct syntax and common patterns, it can help reduce common coding errors.
 -   **Faster Prototyping**: Quickly generate initial code for new features or projects.
+-   **Autonomous Development** (NEW): Delegate entire tasks to Copilot, which can fix bugs, implement features, and create pull requests independently.
+-   **Multi-File Workflows** (NEW): Edit multiple files simultaneously with natural language instructions using Copilot Edits.
+-   **Visual Development** (NEW): Convert mockups, screenshots, and images directly into working code.
+
+## Modern Copilot Capabilities (2024/2025)
+
+GitHub Copilot has evolved significantly beyond simple code completion. Here are the major capability modes:
+
+### 1. **Inline Suggestions** (Classic Mode)
+The original Copilot experience - suggestions appear as you type, which you can accept with `Tab`.
+
+### 2. **Copilot Chat**
+Ask questions, request explanations, and have conversations about your code in natural language.
+
+### 3. **Copilot Edits** (NEW)
+Edit multiple files simultaneously using natural language instructions. Perfect for refactoring across your codebase.
+
+### 4. **Agent Mode** (NEW)
+Copilot works autonomously to complete tasks, iterate on its own work, and fix errors without constant guidance.
+
+### 5. **Copilot Coding Agent** (NEW)
+Assign entire GitHub issues to Copilot, which will analyze the problem, implement changes, run tests, and create a pull request - all on its own.
 
 ## Getting Started with GitHub Copilot in VS Code
 
 To use GitHub Copilot, you need:
 
-1.  **A GitHub account**: With an active GitHub Copilot subscription.
-2.  **Visual Studio Code**: The popular code editor.
+1.  **A GitHub account**: With an active GitHub Copilot subscription (Individual, Business, or Enterprise).
+2.  **Visual Studio Code**: The popular code editor (or VS Code Insiders for preview features).
 3.  **GitHub Copilot Extension**: Installed from the VS Code Marketplace.
+4.  **GitHub Copilot Chat Extension**: For chat, edits, and agent capabilities.
 
 Once installed and authenticated, Copilot will automatically start suggesting code as you type. You can accept suggestions by pressing `Tab`, dismiss them by pressing `Esc`, or cycle through multiple suggestions using `Alt + ]` (next) and `Alt + [` (previous).
+
+### Accessing Different Modes
+
+- **Inline Suggestions**: Active by default as you type
+- **Copilot Chat**: Open with `Ctrl+Shift+I` (Windows/Linux) or `Cmd+Shift+I` (Mac)
+- **Copilot Edits**: Available in the Copilot Chat panel, select files to edit
+- **Agent Mode**: Enable in settings and use from Copilot Chat (requires VS Code Insiders)
+- **Coding Agent**: Available directly from GitHub issues and pull requests
 
 ## Ethical Considerations and Best Practices
 
@@ -58,13 +102,20 @@ While powerful, it's important to use Copilot responsibly:
 -   **Licensing**: Be mindful of the licenses of the code Copilot suggests, especially if your project has specific licensing requirements. While Copilot is trained on public code, it's your responsibility to ensure compliance.
 -   **Security**: Generated code might contain vulnerabilities. Always follow secure coding practices and perform security reviews.
 
+## What's Next?
+
+As you progress through these materials, you'll learn:
+
+- **Beginner**: Master inline suggestions, chat interactions, and basic prompting
+- **Intermediate**: Explore Copilot Edits, multi-file workflows, and advanced prompting
+- **Advanced**: Leverage Agent Mode, build custom extensions, and integrate AI into your entire development workflow
+
 ## Conclusion
 
-GitHub Copilot is a powerful tool that can significantly enhance your coding experience. By understanding how it works and using it effectively, you can boost your productivity, learn new techniques, and focus on solving more complex problems. In the next sections, we will dive deeper into practical usage and hands-on exercises.
+GitHub Copilot has evolved from a simple autocomplete tool into a comprehensive AI development platform. Whether you're writing your first function or orchestrating complex multi-file refactorings, Copilot is there to assist. By understanding how it works and using it effectively, you can boost your productivity, learn new techniques, and focus on solving more complex problems. In the next sections, we will dive deeper into practical usage and hands-on exercises.
 
 ## References
 
 [1] GitHub Copilot. Wikipedia. [https://en.wikipedia.org/wiki/GitHub_Copilot](https://en.wikipedia.org/wiki/GitHub_Copilot)
-[2] OpenAI Codex. OpenAI. [https://openai.com/blog/openai-codex/](https://openai.com/blog/openai-codex/)
-
-
+[2] GitHub Copilot Documentation. GitHub. [https://docs.github.com/en/copilot](https://docs.github.com/en/copilot)
+[3] GitHub Copilot Agent Mode Announcement. GitHub. [https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/](https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/)
