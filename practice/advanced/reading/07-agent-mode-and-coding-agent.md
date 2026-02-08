@@ -471,11 +471,51 @@ The key is to view them as powerful tools that augment human intelligence, not r
 5. **Human review remains essential for critical changes**
 6. **Iterative refinement produces optimal solutions**
 
+## 2025 Updates
+
+### 2025 Update: Multi-Agent Architecture
+
+The 2025 evolution of Agent Mode introduces a **multi-agent architecture** where a primary agent can spawn specialized sub-agents for focused tasks:
+
+- **Sub-agents**: Autonomous agents with isolated context windows that prevent context bloat in the parent agent. Each sub-agent operates independently with its own conversation history and tool access.
+- **Invocation**: Sub-agents can be triggered through prompt hints, the `tools: ['agent']` declaration, or the `agents` property in agent configuration files.
+- **Parallel execution**: Independent sub-tasks can be dispatched to multiple sub-agents simultaneously, dramatically reducing total execution time for complex workflows.
+- **Context bloat prevention**: By isolating sub-agent context windows, the primary agent's context remains clean and focused. Sub-agents return only synthesized results, not their full reasoning chains.
+
+### 2025 Update: Background Agents
+
+Background Agents allow long-running tasks to execute without blocking the developer's interactive session:
+
+- **Copilot CLI running non-interactively**: Background agents operate headlessly, processing tasks in the background while developers continue working on other tasks.
+- **Git worktrees for isolation**: Each background agent session uses a separate git worktree, ensuring that background changes do not interfere with the developer's active working directory.
+- **Limited tool access**: Background agents have restricted capabilities -- no MCP server access, no VS Code extension integration. They operate with core file editing, terminal commands, and git operations only.
+- **Parallel background sessions**: Multiple background agents can run concurrently, each working on different issues or features in their own isolated worktrees.
+
+### 2025 Update: Cloud Coding Agents
+
+Cloud Coding Agents extend the Copilot Coding Agent concept to run entirely on GitHub's remote infrastructure:
+
+- **Execute on GitHub remote infrastructure**: Cloud agents spin up ephemeral compute environments on GitHub's servers, requiring no local resources from the developer.
+- **Assign @copilot to issues for automatic PR creation**: Mentioning `@copilot` in a GitHub issue or assigning Copilot as a reviewer triggers the cloud agent to analyze the issue, plan an implementation, and create a pull request autonomously.
+- **Partner agents**: In addition to GitHub's built-in agent, partner agents such as **Claude Agent** (Anthropic) and **OpenAI Codex** can be configured as alternative cloud coding backends, each bringing different strengths.
+- **Session tracking from VS Code, JetBrains, CLI**: Cloud agent sessions can be monitored and managed from VS Code, JetBrains IDEs, or the GitHub CLI. Developers receive real-time status updates and can interact with the agent during execution.
+
+### 2025 Update: Agent Session Management
+
+The 2025 updates introduce unified session management across all agent types:
+
+- **Unified Chat view for all session types**: A single Chat panel in VS Code and JetBrains displays interactive agent sessions, background agent sessions, and cloud coding agent sessions side by side, providing a consolidated view of all AI-assisted work.
+- **Hand-off between agent types with /delegate**: The `/delegate` command allows seamless hand-off between agent types. For example, an interactive agent can delegate a long-running test suite to a background agent, or escalate a complex issue to a cloud coding agent.
+- **Session filtering, archival, deletion**: Sessions can be filtered by type, status, or date. Completed sessions can be archived for future reference or deleted to keep the workspace clean.
+
+> **Note:** See Modules 11-15 and reading materials 11-14 for comprehensive coverage of these new features.
+
 ## Further Reading
 
 - Module 05: Hands-on Agent Mode exercises
 - Module 06: Copilot Edits for multi-file changes
 - Module 07: Choosing the right AI model for agent tasks
+- Modules 11-15: 2025 advanced agent features and workflows
 
 ## References
 

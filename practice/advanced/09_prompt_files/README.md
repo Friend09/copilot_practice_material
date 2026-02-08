@@ -537,31 +537,116 @@ When generating or reviewing code, ensure compliance with:
 - Update CHANGELOG for notable changes
 ```
 
+## 🆕 2025 Updates: Enhanced Prompt File Format
+
+### Updated Directory Convention
+
+The prompt file directory has changed from `.github/copilot/prompts/` to `.github/prompts/`:
+
+```
+.github/
+└── prompts/
+    ├── code-review.prompt.md
+    ├── refactor.prompt.md
+    └── feature-impl.prompt.md
+```
+
+User-level prompts are stored in your VS Code profile and synced via Settings Sync.
+
+### New YAML Frontmatter Properties
+
+Prompt files now support richer frontmatter with tool and agent configuration:
+
+```yaml
+---
+name: research-implement
+description: Research a topic then implement the solution
+argument-hint: Describe the feature you want to implement
+agent: agent                    # Execution mode: ask, edit, agent, or custom agent name
+model: claude-sonnet-4          # Optional: specify the language model
+tools: ['agent', 'readFile', 'search', 'editFiles', 'runTerminalCommand']
+---
+```
+
+#### Key new properties:
+
+| Property | Description |
+|----------|-------------|
+| `name` | Identifier used after `/` in chat (defaults to filename) |
+| `argument-hint` | Guidance text for user input |
+| `agent` | Execution agent: `ask`, `edit`, `agent`, or a custom agent name |
+| `model` | Language model to use (uses default if unspecified) |
+| `tools` | Available tools — including `'agent'` for sub-agent invocation |
+
+### Sub-Agent Invocation via `tools: ['agent']`
+
+Adding `'agent'` to the tools list enables the prompt to spawn sub-agents:
+
+```yaml
+---
+name: parallel-review
+tools: ['agent', 'readFile', 'search']
+---
+
+Review this codebase using parallel sub-agents:
+1. Sub-agent 1: Check for security vulnerabilities
+2. Sub-agent 2: Analyze performance bottlenecks
+3. Sub-agent 3: Review code quality and patterns
+
+Synthesize all findings into a single report.
+```
+
+This is a key integration with **Module 11 (Sub-Agents)** — prompt files become the reusable way to trigger multi-agent workflows.
+
+### Built-in Variables
+
+Prompt files support dynamic variable substitution:
+
+| Variable | Description |
+|----------|-------------|
+| `${workspaceFolder}` | Full workspace path |
+| `${selection}` | Currently selected text |
+| `${file}` | Current file path |
+| `${fileBasename}` | Current filename |
+| `${input:varName}` | Prompt user for input |
+
+### Tool References
+
+Reference specific tools in your prompt body using `#tool:tool-name` syntax:
+
+```markdown
+Use #tool:search to find all API endpoints, then use #tool:readFile
+to examine each one for security issues.
+```
+
+> **See also**: Module 11 (Sub-Agents) for multi-agent prompt patterns, Module 12 (Custom Agents) for `.agent.md` format
+
+---
+
 ## Organizing Prompt Files
 
 ### Directory Structure
 
 ```
 .github/
-└── copilot/
-    └── prompts/
-        ├── development/
-        │   ├── code-review.md
-        │   ├── refactor.md
-        │   ├── bug-fix.md
-        │   └── feature-implementation.md
-        ├── testing/
-        │   ├── unit-tests.md
-        │   ├── integration-tests.md
-        │   └── e2e-tests.md
-        ├── documentation/
-        │   ├── api-docs.md
-        │   ├── readme.md
-        │   └── inline-comments.md
-        └── standards/
-            ├── python-style.md
-            ├── javascript-style.md
-            └── api-conventions.md
+└── prompts/
+    ├── development/
+    │   ├── code-review.prompt.md
+    │   ├── refactor.prompt.md
+    │   ├── bug-fix.prompt.md
+    │   └── feature-implementation.prompt.md
+    ├── testing/
+    │   ├── unit-tests.prompt.md
+    │   ├── integration-tests.prompt.md
+    │   └── e2e-tests.prompt.md
+    ├── documentation/
+    │   ├── api-docs.prompt.md
+    │   ├── readme.prompt.md
+    │   └── inline-comments.prompt.md
+    └── standards/
+        ├── python-style.prompt.md
+        ├── javascript-style.prompt.md
+        └── api-conventions.prompt.md
 ```
 
 ## Best Practices

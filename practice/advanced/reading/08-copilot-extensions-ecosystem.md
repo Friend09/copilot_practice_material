@@ -508,10 +508,50 @@ def skill_endpoint():
 5. **Good documentation improves adoption**
 6. **Monitor and optimize performance**
 
+## 2025 Updates
+
+### 2025 Update: Evolving Ecosystem
+
+Copilot Extensions (Skillsets and HTTP-based Agents) remain available but are now complemented by two new extensibility mechanisms that offer simpler, file-based alternatives:
+
+- **Agent Skills** (SKILL.md) - A file-based, portable open standard defined at [agentskills.io](https://agentskills.io). Agent Skills allow developers to define reusable skill definitions as markdown files that any compatible AI agent can consume, without requiring server infrastructure.
+- **Custom Agents** (.agent.md) - Local agent definitions that replace the earlier `.chatmode.md` format. Custom agents are defined as markdown files in the repository and support tool declarations, handoff configurations, and MCP server bindings.
+
+### Migration: Skillsets to Agent Skills
+
+For teams currently using Copilot Skillsets, the new Agent Skills format may be a better fit in certain scenarios:
+
+- **When to migrate**: Instruction-based skills that don't need server infrastructure. If your skillset primarily provides prompts, context, and instructions (rather than calling external APIs), Agent Skills offer a simpler, infrastructure-free alternative.
+- **When to stay**: HTTP integrations needing real-time external data. If your skillset calls external APIs, databases, or services that require live connectivity, the traditional Skillset/Agent extension model remains the right choice.
+- **Key differences**:
+
+| Aspect | Copilot Skillsets | Agent Skills (SKILL.md) |
+|--------|------------------|------------------------|
+| Hosting | Requires HTTP server | File-based, no server needed |
+| Format | JSON manifest + API endpoint | Markdown file |
+| Portability | GitHub Copilot only | Cross-agent compatible |
+| External API access | Native support | Requires MCP server bridge |
+| Setup complexity | Medium-High | Low |
+
+- See **Module 13** for detailed Agent Skills creation and usage.
+
+### Migration: .chatmode.md to .agent.md
+
+The `.chatmode.md` format has been superseded by `.agent.md` for defining custom agents. Migration steps:
+
+- **Rename file extension**: Change `.chatmode.md` files to `.agent.md` (e.g., `reviewer.chatmode.md` becomes `reviewer.agent.md`).
+- **Add new properties**: The `.agent.md` format supports additional frontmatter properties:
+  - `handoffs` - Define which other agents this agent can delegate to
+  - `agents` - Specify sub-agents that can be invoked
+  - `mcp-servers` - Bind MCP servers directly to the agent for tool access
+- See **Module 12** for complete custom agents documentation and migration examples.
+
 ## Further Reading
 
 - Module 08: Hands-on extension building exercises
 - Module 09: Prompt Files for extension usage patterns
+- Module 12: Custom Agents (.agent.md) deep dive
+- Module 13: Agent Skills (SKILL.md) creation and usage
 - GitHub Copilot Extensions Documentation
 
 ## References

@@ -29,6 +29,10 @@ Each demo is now organized in its own folder with everything you need:
 | `demo5_code_review/`            | AI-Powered Code Review                               | QA and development teams       | 10-12 min |
 | `demo6_extensions_integration/` | DevOps Tool Integration                              | DevOps and platform teams      | 15-20 min |
 | `demo7_vscode_features/`        | VS Code Enterprise Features & Advanced Configuration | Enterprise teams               | 15-25 min |
+| `demo8_subagents_custom_agents/` | Sub-Agents, .agent.md, Handoffs                     | Advanced agent users           | 20-25 min |
+| `demo9_cloud_agents/`           | Cloud Coding Agents & Background Agents              | DevOps & platform teams        | 15-20 min |
+| `demo10_agent_skills/`          | Agent Skills (SKILL.md) & Progressive Disclosure     | Extension developers           | 15-20 min |
+| `demo11_copilot_spaces/`        | Copilot Spaces & Context Curation                    | Team leads & architects        | 10-15 min |
 
 ### Each Demo Folder Contains:
 
@@ -125,6 +129,40 @@ code README.md
 - **Interactive**: Let audience suggest modifications
 - **Business Value**: ROI discussion and adoption strategies
 - **Next Steps**: Implementation guidance
+
+### 🧠 Expert Track: 45-Minute Multi-Agent Presentation
+
+For audiences already familiar with basic agent mode:
+
+#### **Opening (5 minutes)**
+1. **Context**: "Agent mode was just the beginning"
+2. **Show Evolution**: Single agent → Sub-agents → Cloud agents → Agent Skills
+
+#### **Core Demos (30 minutes)**
+
+##### **Demo 8: Sub-Agents & Custom Agents** (12 minutes)
+- **Folder**: `demo8_subagents_custom_agents/`
+- **Key Highlight**: Context bloat problem → sub-agent solution → handoff chains
+- **Audience Value**: Complex multi-step tasks solved by coordinated agents
+
+##### **Demo 9: Cloud Agents** (8 minutes)
+- **Folder**: `demo9_cloud_agents/`
+- **Key Highlight**: Assign @copilot to issues → autonomous PR creation
+- **Audience Value**: Fully autonomous feature implementation from issue to PR
+
+##### **Demo 10: Agent Skills** (5 minutes)
+- **Folder**: `demo10_agent_skills/`
+- **Key Highlight**: SKILL.md as portable, open-standard expertise
+- **Audience Value**: Share domain knowledge across tools and teams
+
+##### **Demo 11: Copilot Spaces** (5 minutes)
+- **Folder**: `demo11_copilot_spaces/`
+- **Key Highlight**: Context curation → grounded responses
+- **Audience Value**: Consistent AI responses across the team
+
+#### **Q&A and Wrap-up** (10 minutes)
+- **Interactive**: Show how features combine for real workflows
+- **Future**: Agent ecosystem roadmap and partner agents
 
 ---
 
@@ -367,6 +405,14 @@ code README.md
 - Focus on available features
 - Explain the roadmap for unreleased features
 - Show documentation and previews
+
+**If 2025 features (demos 8-11) are unavailable**:
+
+- Sub-agents, custom agents (.agent.md), and Agent Skills require VS Code 1.100+
+- Cloud coding agents require Copilot Pro+ or Enterprise subscription
+- Copilot Spaces require access via GitHub.com (not available on all plans)
+- Partner agents (Claude Agent, OpenAI Codex) may require separate activation
+- Check GitHub Copilot settings and subscription tier
 
 ---
 

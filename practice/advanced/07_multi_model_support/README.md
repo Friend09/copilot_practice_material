@@ -28,23 +28,23 @@ GitHub Copilot now offers access to models from three major AI providers:
   - Speed: Slower (more thinking time)
 
 ### Anthropic Models (Claude)
-- **Claude 3.5 Sonnet** - Current flagship
-  - Best for: Long contexts, detailed analysis
-  - Strengths: Excellent instruction following, safety
+- **Claude Sonnet 4** - Balanced flagship
+  - Best for: Long contexts, detailed analysis, coding tasks
+  - Strengths: Excellent instruction following, strong coding
   - Context window: Very large (200K tokens)
   - Speed: Fast
 
-- **Claude Opus 4** - Most capable Claude model
+- **Claude Opus 4.6** - Most capable Claude model
   - Best for: Most complex tasks requiring deep reasoning
-  - Strengths: Exceptional quality, thorough responses
+  - Strengths: Exceptional quality, thorough responses, agentic workflows
   - Context window: Very large (200K tokens)
   - Speed: Moderate
 
-- **Claude 3.7 Thinking** - Reasoning variant
-  - Best for: Problems requiring explicit reasoning chains
-  - Strengths: Transparent thought process
-  - Context window: Large
-  - Speed: Moderate
+- **Claude Haiku 3.5** - Fast and efficient
+  - Best for: Quick iterations, simple tasks
+  - Strengths: Speed, low cost, good quality for its size
+  - Context window: Large (200K tokens)
+  - Speed: Very fast
 
 ### Google Models (Gemini)
 - **Gemini 2.0 Flash** - Fast general model
@@ -348,6 +348,39 @@ Different models respond better to different prompting styles:
 | Code Gen | Excellent | Excellent | Very Good | Excellent |
 | Cost | $$$ | $$$$ | $$ | $$$$ |
 
+## 2025 Updates: Model Selection in Agents
+
+### Custom Agents with Model Preferences
+
+Custom agents (`.agent.md` files) can specify their preferred model:
+
+```yaml
+---
+name: deep-reviewer
+model: claude-opus-4.6
+tools: ['readFile', 'search']
+---
+```
+
+Or use a prioritized fallback list:
+
+```yaml
+---
+name: smart-coder
+model: ['claude-opus-4.6', 'gpt-4o', 'gemini-2.5-pro']
+---
+```
+
+The system tries each model in order until one is available. See **Module 12** for full details.
+
+### Cloud Coding Agent Model Selection
+
+Pro and Pro+ subscribers can select the model used by the Copilot coding agent (the cloud agent that works on GitHub issues). This is configured in your GitHub Copilot settings.
+
+### Auto Model Selection
+
+GitHub Copilot now supports **automatic model selection** where the system chooses the best model based on the task at hand — fast models for simple completions, reasoning models for complex problems.
+
 ## Key Takeaways
 
 1. **Different models excel at different tasks**
@@ -356,9 +389,13 @@ Different models respond better to different prompting styles:
 4. **Experiment to find your preferences**
 5. **Consider switching models during development**
 6. **Reasoning models are worth the wait for hard problems**
+7. **Custom agents can specify model preferences** in their `.agent.md` frontmatter
+8. **Cloud coding agents** support custom model selection for Pro+ subscribers
 
 ## Next Steps
 
+- **Module 12**: Create custom agents with model preferences
+- **Module 14**: Configure models for cloud coding agents
 - Try **Copilot Extensions** (Module 08) to integrate external models
 - Explore **Prompt Files** (Module 09) to save model-specific prompts
 - Learn **Vision for Copilot** (Module 10) which leverages multimodal models

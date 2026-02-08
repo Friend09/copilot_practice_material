@@ -7,7 +7,7 @@ This comprehensive repository contains:
 - **Learning resources** including a 30-day roadmap and troubleshooting guides
 - **VS Code enterprise features** including custom instructions, prompt files, tool sets, and chat modes
 
-All materials help you master **GitHub Copilot**, **Copilot Chat**, **VS Code advanced features**, and the new **Copilot agent (MCP)** capabilities.
+All materials help you master **GitHub Copilot**, **Copilot Chat**, **VS Code advanced features**, **Copilot agent (MCP)**, **multi-agent architecture**, **Agent Skills**, **cloud coding agents**, and **Copilot Spaces**.
 Examples are in **Python 3.8+** and designed for **VS Code**.
 
 ---
@@ -20,7 +20,7 @@ copilot_practice_material/
 ├── _copilot_practice_material.code-workspace
 ├── practice/                          # Structured learning exercises
 │   ├── beginner/                      # Beginner track (01-05 modules + daily exercises)
-│   └── advanced/                      # Advanced track (01-05 modules + daily exercises)
+│   └── advanced/                      # Advanced track (01-15 modules + daily exercises)
 ├── demo/                              # Example implementations and demos
 │   ├── basic/                         # Basic Copilot usage examples
 │   └── advanced/                      # Advanced patterns and techniques
@@ -48,14 +48,14 @@ Work through `practice/` exercises in order for the best learning experience.
 | Tool / Account                       | Purpose                                | Minimum Version       |
 | ------------------------------------ | -------------------------------------- | --------------------- |
 | **GitHub account** with Copilot seat | Enables Copilot suggestions & chat     | any paid Copilot plan |
-| **VS Code**                          | Editor & Copilot extensions            | 1.85 or later         |
+| **VS Code**                          | Editor & Copilot extensions            | 1.100 or later        |
 | **GitHub Copilot** extension         | Inline code completions                | latest                |
-| **GitHub Copilot Chat** extension    | Chat, agent mode & enterprise features | v ≥ 0.10              |
+| **GitHub Copilot Chat** extension    | Chat, agent mode & enterprise features | latest                |
 | **Python**                           | Run examples                           | 3.8+                  |
 | **uv** (optional)                    | Fast `pip` alternative                 | 0.1.30+               |
 | **make** (optional)                  | Convenience tasks                      | any                   |
 
-> **Note** – Advanced features like MCP servers, custom instructions, and prompt files require VS Code 1.95+ and may need enterprise or beta access.
+> **Note** – Advanced features (modules 05-10) require VS Code 1.95+. Modules 11-15 (sub-agents, custom agents, cloud agents, spaces) require VS Code 1.100+ and may need **Copilot Pro+**, **Business**, or **Enterprise** access.
 
 ---
 
@@ -93,8 +93,8 @@ Work through `practice/` exercises in order for the best learning experience.
 5. **(Advanced) Enable agent mode**
 
    - Ensure the **GitHub Copilot Chat** extension is installed.
-   - Command Palette → **GitHub Copilot: Toggle Agent Mode**.
-   - When prompted, approve access to the "github" MCP server.
+   - In the Copilot Chat panel, use the **mode dropdown** to switch to **Agent** mode.
+   - When prompted, approve access to MCP servers (e.g., "github").
 
 ---
 
@@ -118,13 +118,23 @@ Perfect for those new to GitHub Copilot:
 
 For experienced developers exploring sophisticated features:
 
-| Module                 | Topic                   | Goal                                          |
-| ---------------------- | ----------------------- | --------------------------------------------- |
-| 01_custom_instructions | Repository instructions | Steer Copilot via project-specific guidelines |
-| 02_advanced_prompts    | Multi‑line prompts      | Generate complete features and applications   |
-| 03_project_context     | Custom APIs & context   | Use your own APIs in Copilot completions      |
-| 04_refactor_debug      | Refactoring & debugging | Refactor & debug legacy code with Chat        |
-| 05_mcp_agent           | Agent mode (MCP)        | Let Copilot agent fix issues & open PRs       |
+| Module                 | Topic                       | Goal                                          |
+| ---------------------- | --------------------------- | --------------------------------------------- |
+| 01_custom_instructions | Repository instructions     | Steer Copilot via project-specific guidelines |
+| 02_advanced_prompts    | Multi‑line prompts          | Generate complete features and applications   |
+| 03_project_context     | Custom APIs & context       | Use your own APIs in Copilot completions      |
+| 04_refactor_debug      | Refactoring & debugging     | Refactor & debug legacy code with Chat        |
+| 05_mcp_agent           | Agent mode (MCP)            | Let Copilot agent fix issues & open PRs       |
+| 06_copilot_edits       | Multi-file editing          | Edit multiple files with natural language      |
+| 07_multi_model_support | AI model selection          | Choose the right model for each task           |
+| 08_copilot_extensions  | Extensions & Skillsets      | Build custom Copilot integrations              |
+| 09_prompt_files        | Prompt templates            | Create reusable prompt blueprints              |
+| 10_vision_copilot      | Image-to-code               | Generate code from mockups and screenshots     |
+| 11_subagents           | Sub-Agents                  | Use multi-agent architecture for complex tasks |
+| 12_custom_agents       | Custom Agents (.agent.md)   | Create agents with handoffs and tool access    |
+| 13_agent_skills        | Agent Skills (SKILL.md)     | Build portable, open-standard skills           |
+| 14_cloud_agents        | Cloud & Background Agents   | Run agents on GitHub cloud infrastructure      |
+| 15_spaces_memory       | Copilot Spaces & Memory     | Curate context and leverage persistent memory  |
 
 **Daily Exercises**: days 15-30 with complex scenarios and real-world applications
 
@@ -188,7 +198,7 @@ Two formats for different learning styles:
 
 - **Inline Suggestions** – Type, accept with `Tab`, cycle variants with `Alt` + `[` / `Alt` + `]`
 - **Copilot Chat** – `Ctrl` + `Shift` + `I` (or chat icon) to open panel; ask questions
-- **Agent Tasks** – Switch chat panel to **Agent** mode; issue commands like:
+- **Agent Tasks** – Use the mode dropdown in Copilot Chat to switch to **Agent** mode; issue commands like:
   > _Fix issue #1 in `bugfix/buggy_code.py` and commit the changes._
 - **Daily Practice** – Spend 30-45 minutes daily with exercises and challenges
 

@@ -1,5 +1,12 @@
 # Module 08 – Copilot Extensions: Building Skillsets and Custom Agents
 
+> **Important: Evolving Ecosystem** — The Copilot Extensions model described in this module (Skillsets and Agents via HTTP endpoints) remains available but is being complemented by two newer approaches:
+>
+> - **Agent Skills** (SKILL.md) — An open standard for portable, file-based skills. See **Module 13**.
+> - **Custom Agents** (.agent.md) — Local agent definitions with handoffs and tool control. See **Module 12**.
+>
+> For new projects, consider starting with Agent Skills and Custom Agents first, as they require no server infrastructure. Use Copilot Extensions when you need HTTP-based integrations with external services.
+
 ## 🎯 Overview
 
 GitHub Copilot Extensions allow you to extend Copilot's capabilities by integrating external services, APIs, and custom logic. This module teaches you how to build both **Skillsets** (simple, task-specific extensions) and **Agents** (complex, full-control extensions).
@@ -657,8 +664,39 @@ Check build and deployment status.
 4. **Good documentation helps Copilot use your extension**
 5. **Testing is essential** - test locally before deploying
 
+---
+
+## Migration Guide: Extensions to Agent Skills
+
+If you have existing Copilot Extensions that could be simplified, consider migrating to **Agent Skills** (Module 13):
+
+| Copilot Extensions | Agent Skills (.github/skills/) |
+|-------------------|-------------------------------|
+| Require HTTP server infrastructure | File-based, no server needed |
+| Deployed externally | Lives in your repository |
+| Registered on GitHub Marketplace | Discovered automatically |
+| Up to 5 skills per skillset | Unlimited skills |
+| GitHub handles routing | Copilot loads on-demand |
+| Complex setup and deployment | Create SKILL.md and you're done |
+
+### When to stay with Extensions
+
+- You need real-time data from external APIs (weather, databases, etc.)
+- You need custom authentication flows
+- You need stateful server-side logic
+- You're publishing to the GitHub Marketplace
+
+### When to migrate to Agent Skills
+
+- Your extension primarily provides instructions and workflows
+- You want cross-platform support (VS Code, CLI, coding agent)
+- You want simpler maintenance with no infrastructure
+- You want to share skills via git
+
 ## Next Steps
 
+- **Module 12**: Create Custom Agents (.agent.md) for local agent workflows
+- **Module 13**: Build Agent Skills for portable, file-based capabilities
 - Explore **Prompt Files** (Module 09) to create reusable prompts for your extensions
 - Try **Vision for Copilot** (Module 10) to add image processing to extensions
 
@@ -668,3 +706,4 @@ Check build and deployment status.
 - [Skillsets API Reference](https://docs.github.com/en/copilot/building-copilot-extensions/building-a-copilot-skillset-for-your-copilot-extension)
 - [Agent Development Guide](https://docs.github.com/en/copilot/building-copilot-extensions/building-a-copilot-agent-for-your-copilot-extension)
 - [Example Extensions Repository](https://github.com/github/copilot-extensions-examples)
+- [Agent Skills Standard (agentskills.io)](https://agentskills.io)

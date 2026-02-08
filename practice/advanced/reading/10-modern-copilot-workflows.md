@@ -507,10 +507,43 @@ Modern Copilot workflows represent a fundamental shift in software development. 
 
 The key is not to use every feature all the time, but to understand each tool's strengths and apply them strategically to create efficient, repeatable workflows.
 
+## 2025 Workflow Patterns
+
+### 2025 Workflow: Multi-Agent Development
+
+This workflow leverages the multi-agent architecture for complex feature implementation:
+
+1. **Architect agent designs the solution** (read-only tools) - A specialized agent with access to codebase search and documentation tools (but no write permissions) analyzes the requirements and produces an architectural plan, identifying components, interfaces, and dependencies.
+2. **Sub-agents research specific areas in parallel** - The architect spawns sub-agents to investigate specific areas: one explores existing authentication patterns, another reviews the database schema, a third checks API conventions. These run concurrently with isolated contexts.
+3. **Plan agent hands off to implementation agent** - Once research is complete, the planning agent synthesizes findings into a detailed implementation plan and uses `/delegate` to hand off to an implementation-focused agent with write access to the codebase.
+4. **Implementation agent hands off to test agent** - After code changes are made, the implementation agent delegates to a testing agent that writes and runs tests, verifying the implementation meets the architectural plan's requirements.
+5. **Results synthesized by the architect** - The architect agent reviews all outputs, ensures consistency across components, and presents a unified summary of changes to the developer for final review.
+
+### 2025 Workflow: Cloud-First Development
+
+This workflow enables fully autonomous feature development through GitHub's cloud infrastructure:
+
+1. **Create detailed GitHub issue with acceptance criteria** - Write a thorough issue that includes the problem description, expected behavior, acceptance criteria, relevant file paths, and any constraints or patterns to follow.
+2. **Assign to @copilot** - Assign the issue to Copilot or mention `@copilot` in the issue. The cloud coding agent picks up the issue and begins analysis.
+3. **Cloud agent creates PR autonomously** - The agent spins up an ephemeral environment, analyzes the codebase, implements the changes, runs available tests, and opens a pull request with a detailed description of all changes made.
+4. **Review PR in VS Code or GitHub** - Review the generated PR using your preferred interface. The PR includes inline explanations of key decisions and links back to the original issue.
+5. **Iterate via @copilot mentions** - If changes are needed, comment on specific lines or leave general feedback mentioning `@copilot`. The cloud agent picks up the feedback and pushes additional commits to address review comments.
+
+### 2025 Workflow: Spaces-Driven Context
+
+This workflow uses Copilot Spaces to provide curated, persistent context for agent sessions:
+
+1. **Create a Copilot Space for the project area** - Define a Space in GitHub that represents a specific domain, feature area, or project component (e.g., "Authentication System" or "Payment Processing").
+2. **Curate relevant files, docs, and discussions** - Add source files, design documents, architecture decision records, relevant GitHub discussions, and external documentation links to the Space. This creates a focused knowledge base.
+3. **Start agent session within the Space context** - When initiating an agent session (interactive, background, or cloud), select the Space as the context source. The agent's responses and actions are grounded in the curated knowledge.
+4. **Agent responses are grounded in curated knowledge** - The agent draws on the Space's contents for naming conventions, architectural patterns, API designs, and domain terminology, producing more consistent and contextually appropriate results.
+5. **Share Space with team for consistent context** - Spaces are shareable across the team, ensuring all developers (and their agent sessions) operate with the same contextual understanding, reducing inconsistencies and onboarding time.
+
 ## Further Reading
 
 - All Module READMEs for hands-on practice
 - Reading materials 01-09 for deep dives
+- Reading materials 11-14 for 2025 advanced features
 - GitHub Copilot Blog for latest updates
 
 ## References

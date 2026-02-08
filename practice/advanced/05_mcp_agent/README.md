@@ -167,6 +167,88 @@ This demonstrates MCP's ability to:
 - Specify which files can/cannot be modified
 - Review and reject plans that don't align with your intent
 
+## 🆕 2025 Updates: Advanced MCP Features
+
+### MCP Gallery (One-Click Install)
+
+VS Code now includes an MCP server gallery accessible from the Extensions view:
+
+1. Enable: `"chat.mcp.gallery.enabled": true`
+2. Open Extensions view and search `@mcp`
+3. Install servers directly to your user profile or workspace
+4. Servers auto-configure — no manual `mcp.json` editing required
+
+### MCP Transport Types
+
+MCP now supports three transport methods:
+
+| Transport | Use Case | Example |
+|-----------|----------|---------|
+| **stdio** | Local servers running as executables | `npx @modelcontextprotocol/server-sqlite` |
+| **Streamable HTTP** | Remote servers accessed via URL | `https://api.example.com/mcp` |
+| **SSE** (legacy) | Server-sent events | Legacy support |
+
+### MCP in Dev Containers
+
+Configure MCP servers in `devcontainer.json`:
+
+```json
+{
+  "customizations": {
+    "vscode": {
+      "mcp": {
+        "servers": {
+          "myServer": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["my-mcp-server"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### Auto-Discovery
+
+Enable `"chat.mcp.discovery.enabled": true` to automatically detect MCP servers configured in Claude Desktop and other MCP-compatible applications.
+
+### MCP Apps
+
+MCP servers can now provide interactive UI components within VS Code, not just tools and data.
+
+### Important Limits
+
+- Maximum **128 tools** per request across all MCP servers
+- Use the tool picker in Chat to enable/disable specific tools
+- Group tools into **tool sets** for organization
+- Settings Sync keeps your MCP configurations synchronized across devices
+
+### Configuration Format
+
+```json
+{
+  "servers": {
+    "myServer": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["my-mcp-server"],
+      "env": { "API_KEY": "${input:api-key}" },
+      "envFile": ".env"
+    }
+  },
+  "inputs": [{
+    "type": "promptString",
+    "id": "api-key",
+    "description": "Your API Key",
+    "password": true
+  }]
+}
+```
+
+---
+
 ## Learning Outcomes
 
 After completing these exercises, you should understand:
@@ -175,9 +257,14 @@ After completing these exercises, you should understand:
 - How to provide effective prompts for complex tasks
 - How agents handle errors and iterate on solutions
 - The power and limitations of autonomous AI coding
+- How to install and configure MCP servers from the gallery
+- How to use MCP in dev containers and across devices
 
 ## Next Steps
 
+- **Module 11**: Learn about sub-agents and multi-agent architecture
+- **Module 12**: Create custom agents with `.agent.md` format
+- **Module 14**: Explore cloud and background agents
 - Explore **Copilot Edits** for multi-file refactoring (Module 06)
 - Learn about **Multi-Model Support** for task optimization (Module 07)
 - Try building your own **Copilot Extensions** (Module 08)
