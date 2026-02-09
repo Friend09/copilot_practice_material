@@ -4,10 +4,10 @@
 
 Two independent 30-minute sessions designed for audiences with **no prior Copilot experience**. Pick one per day, or run both on separate days for different groups.
 
-| Session | Theme | Core Message | Key Demo |
-|---------|-------|-------------|----------|
+| Session                     | Theme                | Core Message               | Key Demo                     |
+| --------------------------- | -------------------- | -------------------------- | ---------------------------- |
 | **A: Productivity Edition** | Generate code faster | "Copilot makes you faster" | Chat: explain, test, enhance |
-| **B: Code Quality Edition** | Write better code | "Copilot makes you better" | Chat: review, fix, secure |
+| **B: Code Quality Edition** | Write better code    | "Copilot makes you better" | Chat: review, fix, secure    |
 
 Both sessions share the same opening (talking points + inline completions) and close with an Agent Mode teaser.
 
@@ -74,6 +74,7 @@ Use the talking points from [speaker_notes.md](speaker_notes.md):
 #### 3a. Explain Code (2 min)
 
 Paste from [prompts.md](prompts.md):
+
 > "Explain what this Calculator class does, including each method."
 
 - Read the response aloud. Point out how clear and structured it is.
@@ -81,6 +82,7 @@ Paste from [prompts.md](prompts.md):
 #### 3b. Add Error Handling (3 min)
 
 Paste:
+
 > "Add error handling to the divide method to handle division by zero gracefully, and add input validation to all methods to ensure arguments are numbers."
 
 - Show the diff. Accept the changes. Run the code again.
@@ -88,6 +90,7 @@ Paste:
 #### 3c. Generate Tests (3 min)
 
 Paste:
+
 > "Generate comprehensive unit tests for this Calculator class using pytest."
 
 - Show the generated test file. Run: `python -m pytest` (if pytest is installed) or just review the tests.
@@ -95,6 +98,7 @@ Paste:
 #### 3d. Add History Feature (optional, if time permits)
 
 Paste:
+
 > "Add a calculation history feature..."
 
 - Accept and show the enhanced class.
@@ -151,6 +155,7 @@ Optionally show: delete a docstring, then undo -- point out how the suggestion c
 #### 3a. Initial Review (3 min)
 
 Paste from [prompts.md](prompts.md):
+
 > "Review this code for bugs, security issues, and code quality problems. List every issue you find with its severity."
 
 - Read through the findings. Point out: "It found the SQL injection, the hardcoded password, the O(n^2) loop, the bare except, AND the missing validation. That's five issues in seconds."
@@ -158,6 +163,7 @@ Paste from [prompts.md](prompts.md):
 #### 3b. Fix SQL Injection (2 min)
 
 Paste:
+
 > "Fix the SQL injection vulnerability in the get_user_data function. Use parameterized queries."
 
 - Show the diff: f-string replaced with `?` placeholder. Accept.
@@ -165,6 +171,7 @@ Paste:
 #### 3c. Fix Hardcoded Password (2 min)
 
 Paste:
+
 > "Fix the hardcoded password issue. Use environment variables with a fallback, and add proper password hashing."
 
 - Show the diff. Point out `os.environ.get()` pattern.
@@ -172,6 +179,7 @@ Paste:
 #### 3d. Fix Performance (2 min)
 
 Paste:
+
 > "The find_slow_duplicates function is O(n^2). Rewrite it to be O(n) using a more efficient approach."
 
 - Show the diff: nested loop replaced with a set-based approach. Say: "From O(n^2) to O(n) -- that matters when you have a million items."
@@ -179,6 +187,7 @@ Paste:
 #### 3e. Fix Error Handling (optional, if time permits)
 
 Paste:
+
 > "Replace the bare except clause in process_data with specific exception handling and proper logging."
 
 **Key takeaway**: "Copilot is a code reviewer that never gets tired and catches everything from security vulnerabilities to performance issues."
@@ -244,11 +253,11 @@ After either session, your audience should understand:
 
 ## Files in This Folder
 
-| File | Purpose |
-|------|---------|
-| [README.md](README.md) | This file -- master guide for both sessions |
-| [prompts.md](prompts.md) | All copy-paste prompts, labeled by session |
-| [speaker_notes.md](speaker_notes.md) | Talking points, engagement tips, backup plans, Q&A |
+| File                                                     | Purpose                                                      |
+| -------------------------------------------------------- | ------------------------------------------------------------ |
+| [README.md](README.md)                                   | This file -- master guide for both sessions                  |
+| [prompts.md](prompts.md)                                 | All copy-paste prompts, labeled by session                   |
+| [speaker_notes.md](speaker_notes.md)                     | Talking points, engagement tips, backup plans, Q&A           |
 | [setup/starter_functions.py](setup/starter_functions.py) | Partial functions for inline completion demo (both sessions) |
-| [setup/calculator.py](setup/calculator.py) | Working calculator for Chat demos (Session A) |
-| [setup/code_for_review.py](setup/code_for_review.py) | Intentionally flawed code for review demo (Session B) |
+| [setup/calculator.py](setup/calculator.py)               | Working calculator for Chat demos (Session A)                |
+| [setup/code_for_review.py](setup/code_for_review.py)     | Intentionally flawed code for review demo (Session B)        |

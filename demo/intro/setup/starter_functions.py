@@ -30,7 +30,7 @@ def calculate_average(numbers: list) -> float:
         20.0
     """
     # TODO: Implement this function (let Copilot suggest!)
-    pass
+    
 
 
 def find_duplicates(items: list) -> list:
