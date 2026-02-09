@@ -8,15 +8,13 @@ This folder contains presentation-ready instruction files for GitHub Copilot dem
 demo/
 ├── README.md                           # This file
 ├── presentation_checklist.md          # Pre-demo setup checklist
+├── intro/                             # 30-min beginner sessions (2 variations)
+│   ├── README.md                      # Minute-by-minute guides for both sessions
+│   ├── prompts.md                     # Copy-paste prompts
+│   ├── speaker_notes.md              # Talking points, Q&A, backup plans
+│   └── setup/                         # Demo files (Python)
 ├── basic/                             # Basic demo examples
-└── advanced/                          # Advanced demo instructions
-    ├── demo1_agent_mode.md            ✅ Agent Mode & Multi-File Intelligence
-    ├── demo2_security.md              ✅ AI-Based Vulnerability Detection
-    ├── demo3_context_understanding.md ✅ Context Understanding & Workspace Awareness
-    ├── demo4_custom_instructions.md   ✅ Function Calling & Custom Instructions
-    ├── demo5_code_review.md           ✅ Code Review & PR Summary Assistance
-    ├── demo6_extensions_integration.md ✅ Extensions & Tool Integration
-    └── demo7_vscode_features.md       ✅ VS Code Enterprise Features & Configuration
+└── advanced/                          # Advanced demo instructions (demo1-demo11)
 ```
 
 ## 🎯 How to Use These Files
@@ -36,6 +34,15 @@ demo/
 4. **Prepare backup examples** in case live demos fail
 
 ## ⏰ Recommended Timing
+
+### Intro Sessions (demo/intro/)
+
+| Session | Duration | Difficulty | Best For |
+| ------- | -------- | ---------- | -------- |
+| Session A: Productivity Edition | 30 min | Beginner | First-time Copilot audiences |
+| Session B: Code Quality Edition | 30 min | Beginner | First-time Copilot audiences |
+
+### Advanced Demos (demo/advanced/)
 
 | Demo                   | Duration  | Difficulty   | Best For                     |
 | ---------------------- | --------- | ------------ | ---------------------------- |
@@ -91,7 +98,7 @@ Before using these demos, ensure you have:
 
 ### For Your Audience
 
-- **Beginners**: Focus on basic productivity improvements
+- **Beginners**: Use the `intro/` sessions -- two ready-made 30-minute presentations
 - **Intermediate**: Show workflow integration and team benefits
 - **Advanced**: Demonstrate complex scenarios and customization
 - **Management**: Emphasize ROI, security, and team productivity

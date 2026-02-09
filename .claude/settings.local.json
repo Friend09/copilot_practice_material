@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:code.visualstudio.com)",
+      "WebFetch(domain:githubnext.com)",
+      "WebFetch(domain:github.blog)"
+    ]
+  }
+}
